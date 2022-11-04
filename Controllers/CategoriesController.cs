@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlogMVC.Data;
 using BlogMVC.Models;
+using BlogMVC.Services.Interfaces;
 
 namespace BlogMVC.Controllers
 {
     public class CategoriesController : Controller
     {
+        // injections
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context, 
+                                    IImageService ImageService)
         {
+            // assign injected value
             _context = context;
+            _imageService = ImageService;
         }
 
         // GET: Categories
@@ -54,10 +60,19 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,ImageData,ImageType")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,CategoryImage")] Category category)
         {
             if (ModelState.IsValid)
             {
+                // set the ImageData and ImageType of image file being uploaded
+                if (category.CategoryImage != null)
+                {
+                    // convert file to a byte array
+                    category.ImageData = await _imageService.ConvertFileToByteArrayAsync(category.CategoryImage);
+                    // get the raw Content-Type header of the uploaded file
+                    category.ImageType = category.CategoryImage.ContentType;
+                }
+
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +101,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ImageData,ImageType")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ImageData,ImageType,CategoryImage")] Category category)
         {
             if (id != category.Id)
             {
@@ -97,6 +112,15 @@ namespace BlogMVC.Controllers
             {
                 try
                 {
+                    // set the ImageData and ImageType of image file being uploaded
+                    if (category.CategoryImage != null)
+                    {
+                        // convert file to a byte array
+                        category.ImageData = await _imageService.ConvertFileToByteArrayAsync(category.CategoryImage);
+                        // get the raw Content-Type header of the uploaded file
+                        category.ImageType = category.CategoryImage.ContentType;
+                    }
+
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }

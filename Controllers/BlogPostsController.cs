@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlogMVC.Data;
 using BlogMVC.Models;
+using BlogMVC.Services.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace BlogMVC.Controllers
 {
     public class BlogPostsController : Controller
     {
+        // injections
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public BlogPostsController(ApplicationDbContext context)
+        public BlogPostsController(ApplicationDbContext context,
+                                   IImageService ImageService)
         {
+            // assign injected value
             _context = context;
+            _imageService = ImageService;
         }
 
         // GET: BlogPosts
@@ -36,6 +43,8 @@ namespace BlogMVC.Controllers
 
             var blogPost = await _context.BlogPosts
                 .Include(b => b.Category)
+                .Include(b => b.Comments)
+                     .ThenInclude(c => c.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blogPost == null)
             {
@@ -57,10 +66,22 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,DateCreated,LastUpdated,CategoryId,Slug,Abstract,IsDeleted,IsPublished,ImageData,ImageType")] BlogPost blogPost)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,CategoryId,Abstract,IsDeleted,IsPublished,BlogPostImage")] BlogPost blogPost)
         {
             if (ModelState.IsValid)
             {
+                // set dateCreated
+                blogPost.DateCreated = DateTime.UtcNow;
+
+                // set the ImageData and ImageType of image file being uploaded
+                if (blogPost.BlogPostImage != null)
+                {
+                    // convert file to a byte array
+                    blogPost.ImageData = await _imageService.ConvertFileToByteArrayAsync(blogPost.BlogPostImage);
+                    // get the raw Content-Type header of the uploaded file
+                    blogPost.ImageType = blogPost.BlogPostImage.ContentType;
+                }
+
                 _context.Add(blogPost);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,7 +112,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,DateCreated,LastUpdated,CategoryId,Slug,Abstract,IsDeleted,IsPublished,ImageData,ImageType")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,DateCreated,LastUpdated,CategoryId,Slug,Abstract,IsDeleted,IsPublished,ImageData,ImageType,BlogPostImage")] BlogPost blogPost)
         {
             if (id != blogPost.Id)
             {
@@ -102,6 +123,18 @@ namespace BlogMVC.Controllers
             {
                 try
                 {
+                    // set DateCreated
+                    blogPost.DateCreated = DateTime.SpecifyKind(blogPost.DateCreated, DateTimeKind.Utc);
+
+                    // set the ImageData and ImageType of image file being uploaded
+                    if (blogPost.BlogPostImage != null)
+                    {
+                        // convert file to a byte array
+                        blogPost.ImageData = await _imageService.ConvertFileToByteArrayAsync(blogPost.BlogPostImage);
+                        // get the raw Content-Type header of the uploaded file
+                        blogPost.ImageType = blogPost.BlogPostImage.ContentType;
+                    }
+
                     _context.Update(blogPost);
                     await _context.SaveChangesAsync();
                 }

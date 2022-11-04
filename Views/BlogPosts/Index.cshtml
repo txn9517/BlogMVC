@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<BlogMVC.Models.BlogPost>
 @using BlogMVC.Services.Interfaces
+@using BlogMVC.Enums
 @inject IImageService ImageService
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutLanding.cshtml";
 }
 
 <h1>Index</h1>
@@ -11,7 +13,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-sm">
     <thead>
         <tr>
             <th>
@@ -40,9 +42,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ImageData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageType)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)
@@ -78,10 +77,7 @@
                 @Html.DisplayFor(modelItem => item.IsPublished)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageData)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageType)
+                <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.BlogPostImage)" class="img-fluid" alt="blog post picture">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)

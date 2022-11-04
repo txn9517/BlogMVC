@@ -1,17 +1,26 @@
 ﻿using BlogMVC.Services.Interfaces;
-using System.Reflection.Metadata.Ecma335;
 
 namespace BlogMVC.Services
 {
     public class ImageService : IImageService
     {
-        private readonly string defaultImage = "/img/DefaultBlogImage.png";
+        private readonly string _defaultBlogPostImageSrc = "/img/DefaultBlogImage.png";
+        private readonly string _defaultCategoryImageSrc = "/img/DefaultCategoryImage.png";
+        private readonly string _defaultUserImageSrc = "/img/DefaultUserImage.png";
 
-        public string ConvertByteArrayToFile(byte[] fileData, string extension)
+        public string ConvertByteArrayToFile(byte[] fileData, string extension, int defaultImage)
         {
-            if (fileData == null)
+            if (fileData == null || fileData.Length == 0)
             {
-                return defaultImage;
+                switch (defaultImage)
+                {
+                    case 1:
+                        return _defaultUserImageSrc;
+                    case 2:
+                        return _defaultBlogPostImageSrc;
+                    case 3:
+                        return _defaultCategoryImageSrc;
+                }
             }
 
             try

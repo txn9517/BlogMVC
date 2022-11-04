@@ -19,10 +19,11 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
     .AddDefaultUI()
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
 
 // custom services
 builder.Services.AddScoped<IImageService, ImageService>();
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

@@ -65,12 +65,6 @@
             @Html.DisplayFor(model => model.ImageData)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageType)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Category)
         </dt>
         <dd class = "col-sm-10">
@@ -78,6 +72,29 @@
         </dd>
     </dl>
 </div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-controller="Comments" method="post">
+            <input type="hidden" asp-for="Id" name="BlogPostId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Add a Comment</label>
+                <textarea name="Body" rows="3" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary rounded-pill my-2 btnLink" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    @foreach(Comment comment in Model.Comments) {
+        <li>@comment.Body</li>
+    }
+</div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

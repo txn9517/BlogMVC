@@ -21,7 +21,7 @@ namespace BlogMVC.Models
         public DateTime DateCreated { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime LastUpdated { get; set; }
+        public DateTime? LastUpdated { get; set; }
 
         // foreign key
         public int CategoryId { get; set; }

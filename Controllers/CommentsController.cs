@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlogMVC.Data;
 using BlogMVC.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogMVC.Controllers
 {
     public class CommentsController : Controller
     {
+        // injections
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public CommentsController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context,
+                                  UserManager<BlogUser> userManager)
         {
+            // assign injected value
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Comments
@@ -59,13 +65,23 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogPostId,AuthorId,DateCreated,LastUpdated,UpdateReason,Body")] Comment comment)
+        public async Task<IActionResult> Create([Bind("Id,BlogPostId,Body")] Comment comment)
         {
+            // remove the author id
+            ModelState.Remove("AuthorId");
+
             if (ModelState.IsValid)
             {
+                comment.AuthorId = _userManager.GetUserId(User);
+
+                // DateCreated
+                comment.DateCreated = DateTime.UtcNow;
+
+                // TODO: Slug
+
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "BlogPosts", new { id=comment.BlogPostId });
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
