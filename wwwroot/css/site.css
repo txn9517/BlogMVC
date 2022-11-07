@@ -1,3 +1,22 @@
+/*html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}*/
+
 :root {
     --tn-primary-color: rgb(41, 157, 216);
     --tn-secondary-color: rgb(42, 198, 201);
@@ -29,9 +48,9 @@ body {
     /*background: linear-gradient(to right, #ACB6E5, #74ebd5);*/ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-nav {
+/*nav {
     background-color: var(--tn-primary-color);
-}
+}*/
 
 .navShadow {
     box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
@@ -53,19 +72,19 @@ footer {
     font-size: 0.9rem;
 }
 
-/* button overrides */
+button overrides
 .btn-outline-primary {
     color: var(--tn-background-color); /* change color of button */
     border-color: var(--tn-nav-toggler-glow) !important;
 }
 
-    .btn-outline-primary:hover,
-    .btn-outline-primary:active,
-    .btn-outline-primary:focus {
-        border-color: var(--tn-nav-toggler-glow);
-        background-color: var(--tn-secondary-color);
-        color: var(--tn-text-light-color) !important;
-    }
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:focus {
+    border-color: var(--tn-nav-toggler-glow);
+    background-color: var(--tn-secondary-color);
+    color: var(--tn-text-light-color) !important;
+}
 
 .btn-primary {
     color: var(--tn-text-light-color); /* change color of text button */
@@ -137,7 +156,6 @@ figcaption {
 }
 
 /* square image */
-
 .square-img-container {
     position: relative;
     background-color: var(--tn-background-color);

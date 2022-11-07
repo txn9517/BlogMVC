@@ -20,7 +20,7 @@ namespace BlogMVC.Controllers
         public CategoriesController(ApplicationDbContext context, 
                                     IImageService ImageService)
         {
-            // assign injected value
+            // assign injected values
             _context = context;
             _imageService = ImageService;
         }

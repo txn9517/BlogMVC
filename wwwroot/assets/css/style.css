@@ -6452,7 +6452,7 @@ textarea {
   -o-transition: all 0.4s ease-out 0s;
   transition: all 0.4s ease-out 0s;
   color: var(--color-body);
-  width: 100%;
+  /*width: 100%;*/
 }
 input:focus, input:active,
 button:focus,

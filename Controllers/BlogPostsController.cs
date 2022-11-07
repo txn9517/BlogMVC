@@ -21,7 +21,7 @@ namespace BlogMVC.Controllers
         public BlogPostsController(ApplicationDbContext context,
                                    IImageService ImageService)
         {
-            // assign injected value
+            // assign injected values
             _context = context;
             _imageService = ImageService;
         }

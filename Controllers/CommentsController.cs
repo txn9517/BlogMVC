@@ -20,7 +20,7 @@ namespace BlogMVC.Controllers
         public CommentsController(ApplicationDbContext context,
                                   UserManager<BlogUser> userManager)
         {
-            // assign injected value
+            // assign injected values
             _context = context;
             _userManager = userManager;
         }
