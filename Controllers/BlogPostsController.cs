@@ -9,9 +9,11 @@ using BlogMVC.Data;
 using BlogMVC.Models;
 using BlogMVC.Services.Interfaces;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogMVC.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class BlogPostsController : Controller
     {
         // injections
@@ -27,6 +29,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: BlogPosts
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.BlogPosts.Include(b => b.Category);
@@ -34,6 +37,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: BlogPosts/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.BlogPosts == null)

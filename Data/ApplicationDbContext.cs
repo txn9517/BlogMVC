@@ -11,7 +11,7 @@ namespace BlogMVC.Data
         {
         }
 
-        // creating db sets to post to db
+        // collections of data received from db
         public virtual DbSet<BlogPost> BlogPosts { get; set; } = default!;
         public virtual DbSet<Comment> Comments { get; set; } = default!;
         public virtual DbSet<Category> Categories { get; set; } = default!;

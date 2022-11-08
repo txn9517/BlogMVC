@@ -22,6 +22,7 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
 
 // custom services
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IBlogPostService, BlogPostService>();
 
 builder.Services.AddMvc();
 
