@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // set up connection to db
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = DataUtility.GetConnectionString(builder.Configuration);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -23,9 +23,14 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
 // custom services
 builder.Services.AddScoped<IImageService, ImageService>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddMvc();
 
 var app = builder.Build();
+
+// TODO: call ManageDataAsync
+var scope = app.Services.CreateScope();
+// seed users & roles to db
+await DataUtility.ManageDataAsync(scope.ServiceProvider);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

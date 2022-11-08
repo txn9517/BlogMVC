@@ -1,4 +1,4 @@
-/*html {
+html {
     font-size: 14px;
 }
 
@@ -15,7 +15,7 @@ html {
 
 body {
     margin-bottom: 60px;
-}*/
+}
 
 :root {
     --tn-primary-color: rgb(41, 157, 216);
@@ -32,21 +32,21 @@ body {
     --tn-body-font: 'Roboto', sans-serif;
 }
 
-html, body {
+/*html, body {
     height: 100%;
-}
+}*/
 
-body {
-    display: flex;
+/*body {*/
+    /*display: flex;
     flex-direction: column;
     color: var(--tn-dark-color);
     font-family: var(--tn-body-font);
     font-weight: 400;
-    font-size: 1.2rem;
+    font-size: 1.2rem;*/
     /*background: #74ebd5;*/ /* fallback for old browsers */
     /*background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);*/ /* Chrome 10-25, Safari 5.1-6 */
     /*background: linear-gradient(to right, #ACB6E5, #74ebd5);*/ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
+/*}*/
 
 /*nav {
     background-color: var(--tn-primary-color);
@@ -56,7 +56,7 @@ body {
     box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.content {
+/*.content {
     flex: 1 0 auto;
     padding-top: 5rem;
     padding-bottom: 5rem;
@@ -66,7 +66,12 @@ footer {
     flex-shrink: 0;
     background-color: var(--tn-primary-color);
     color: var(--tn-text-light-color);
+}*/
+
+.active-dark-mode table {
+    color: var(--tn-text-light-color);
 }
+
 
 .copyright {
     font-size: 0.9rem;

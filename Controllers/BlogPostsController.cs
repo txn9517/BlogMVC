@@ -46,6 +46,7 @@ namespace BlogMVC.Controllers
                 .Include(b => b.Comments)
                      .ThenInclude(c => c.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (blogPost == null)
             {
                 return NotFound();

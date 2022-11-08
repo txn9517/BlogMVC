@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="~/assets/css/vendor/slick-theme.css">
     <link rel="stylesheet" href="~/assets/css/vendor/base.css">
     <link rel="stylesheet" href="~/assets/css/plugins/plugins.css">
-    <link rel="stylesheet" href="~/assets/css/style.css">
+    <link rel="stylesheet" href="~/assets/css/style.css" asp-append-version="true">
     
     <!-- Google Fonts -->
     @*<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,18 +62,16 @@
                             </a>
                         </div>
                     </div>
-
                     <div class="col-xl-6 d-none d-xl-block">
                         <div class="mainmenu-wrapper">
                             <nav class="mainmenu-nav">
                                 <!-- Start Mainmanu Nav -->
                                 <ul class="mainmenu">
                                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                                    <li><a asp-controller="BlogPosts" asp-action="Index">Blog Posts</a></li>
+                                    <li><a asp-controller="BlogPosts" asp-action="Index">BlogPosts</a></li>
                                     <li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
                                     <li><a asp-controller="Comments" asp-action="Index">Comments</a></li>
                                     <li><a asp-controller="Tags" asp-action="Index">Tags</a></li>
-                                    <partial name="_LoginPartial" />
                                 </ul>
                                 <!-- End Mainmanu Nav -->
                             </nav>
@@ -82,28 +80,15 @@
 
                     <div class="col-xl-3 col-lg-8 col-md-8 col-sm-9 col-12">
                         <div class="header-search text-end d-flex align-items-center">
-                            <form class="header-search-form d-sm-block d-none">
-                                <div class="axil-search form-group">
-                                    <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
-                                    <input type="text" class="form-control" placeholder="Search">
+                            <div class="mainmenu-wrapper d-none d-xl-block ms-auto">
+                                <div class="mainmenu-nav">
+                                    <ul class="mainmenu">
+                                        <partial name="_LoginPartial" />
+                                    </ul>
                                 </div>
-                            </form>
-                            <div class="mobile-search-wrapper d-sm-none d-block">
-                                <button class="search-button-toggle"><i class="fal fa-search"></i></button>
-                                <form class="header-search-form">
-                                    <div class="axil-search form-group">
-                                        <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
-                                        <input type="text" class="form-control" placeholder="Search">
-                                    </div>
-                                </form>
                             </div>
-                            <ul class="metabar-block">
-                                <li class="icon"><a href="#"><i class="fas fa-bookmark"></i></a></li>
-                                <li class="icon"><a href="#"><i class="fas fa-bell"></i></a></li>
-                                <li><a href="#"><img src="~/assets/others/author.png" alt="Author Images"></a></li>
-                            </ul>
                             <!-- Start Hamburger Menu  -->
-                            <div class="hamburger-menu d-block d-xl-none">
+                            <div class="hamburger-menu d-block d-xl-none ms-sm-auto">
                                 <div class="hamburger-inner">
                                     <div class="icon"><i class="fal fa-bars"></i></div>
                                 </div>
