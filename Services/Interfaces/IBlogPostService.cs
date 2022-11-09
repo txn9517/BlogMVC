@@ -10,5 +10,20 @@ namespace BlogMVC.Services.Interfaces
 
         // get all blog posts
         public Task<List<BlogPost>> GetAllBlogPostsAsync();
+
+        // get most popular blog post
+        public Task<List<BlogPost>> GetMostPopularBlogPostsAsync();
+
+        // get recent blog posts
+        public Task<List<BlogPost>> GetRecentBlogPostsAsync(int count);
+
+        // get categories
+        public Task<List<Category>> GetCategoriesAsync();
+
+        // get tags
+        public Task<List<Tag>> GetTagsAsync();
+
+        // get blog post tags
+        public Task<List<Tag>> GetBlogPostTags(int blogPostId);
     }
 }

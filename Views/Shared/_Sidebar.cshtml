@@ -1,4 +1,10 @@
-﻿@{
+﻿@using BlogMVC.Services.Interfaces
+@using BlogMVC.Enums
+@inject IImageService ImageService
+@inject IBlogPostService BlogPostService
+
+
+@{
 }
 
 <!-- Start Sidebar Area  -->
@@ -7,49 +13,22 @@
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_categories mb--30">
         <ul>
-            <li class="cat-item">
-                <a href="#" class="inner">
-                    <div class="thumbnail">
-                        <img src="~/assets/images/post-images/category-image-01.jpg" alt="">
-                    </div>
-                    <div class="content">
-                        <h5 class="title">Tech</h5>
-                    </div>
-                </a>
-            </li>
-            <li class="cat-item">
-                <a href="#" class="inner">
-                    <div class="thumbnail">
-                        <img src="~/assets/images/post-images/category-image-02.jpg" alt="">
-                    </div>
-                    <div class="content">
-                        <h5 class="title">Style</h5>
-                    </div>
-                </a>
-            </li>
-            <li class="cat-item">
-                <a href="#" class="inner">
-                    <div class="thumbnail">
-                        <img src="~/assets/images/post-images/category-image-03.jpg" alt="">
-                    </div>
-                    <div class="content">
-                        <h5 class="title">Travel</h5>
-                    </div>
-                </a>
-            </li>
-            <li class="cat-item">
-                <a href="#" class="inner">
-                    <div class="thumbnail">
-                        <img src="~/assets/images/post-images/category-image-04.jpg" alt="">
-                    </div>
-                    <div class="content">
-                        <h5 class="title">Food</h5>
-                    </div>
-                </a>
-            </li>
+            @foreach (Category item in (await BlogPostService.GetCategoriesAsync()).Take(4)) {
+                    <li class="cat-item">
+                        <a asp-controller="Home" asp-action="Index" asp-route-id="@item.Id" class="inner">
+                            <div class="thumbnail">
+                                <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.CategoryImage)" alt="category pictures">
+                            </div>
+                            <div class="content">
+                                <h5 class="title">@item.Name</h5>
+                            </div>
+                        </a>
+                    </li>
+            }
         </ul>
     </div>
     <!-- End Single Widget  -->
+
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_search mb--30">
         <h5 class="widget-title">Search</h5>
@@ -61,84 +40,79 @@
         </form>
     </div>
     <!-- End Single Widget  -->
+
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_postlist mb--30">
-        <h5 class="widget-title">Popular on Blogar</h5>
+        <h5 class="widget-title">Popular on Tom's Tech Blog</h5>
+
         <!-- Start Post List  -->
         <div class="post-medium-block">
-
-            <!-- Start Single Post  -->
-            <div class="content-block post-medium mb--20">
-                <div class="post-thumbnail">
-                    <a href="post-details.html">
-                        <img src="~/assets/images/small-images/blog-sm-01.jpg" alt="Post Images">
-                    </a>
-                </div>
-                <div class="post-content">
-                    <h6 class="title">
-                        <a href="post-details.html">
-                            The underrated design book that transformed the way I
-                            work
+            @foreach (BlogPost post in (await BlogPostService.GetMostPopularBlogPostsAsync()).Take(5))
+            {
+                <!-- Start Single Post  -->
+                <div class="content-block post-medium mb--20">
+                    <div class="post-thumbnail">
+                        <a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@post.Slug">
+                            <img src="@ImageService.ConvertByteArrayToFile(post.ImageData!, post.ImageType!, (int)DefaultImage.BlogPostImage)" alt="blog post pictures">
                         </a>
-                    </h6>
-                    <div class="post-meta">
-                        <ul class="post-meta-list">
-                            <li>Feb 17, 2019</li>
-                            <li>300k Views</li>
-                        </ul>
                     </div>
-                </div>
-            </div>
-            <!-- End Single Post  -->
-            <!-- Start Single Post  -->
-            <div class="content-block post-medium mb--20">
-                <div class="post-thumbnail">
-                    <a href="post-details.html">
-                        <img src="~/assets/images/small-images/blog-sm-02.jpg" alt="Post Images">
-                    </a>
-                </div>
-                <div class="post-content">
-                    <h6 class="title">
-                        <a href="post-details.html">Here’s what you should (and shouldn’t) do when</a>
-                    </h6>
-                    <div class="post-meta">
-                        <ul class="post-meta-list">
-                            <li>Feb 17, 2019</li>
-                            <li>300k Views</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single Post  -->
-            <!-- Start Single Post  -->
-            <div class="content-block post-medium mb--20">
-                <div class="post-thumbnail">
-                    <a href="post-details.html">
-                        <img src="~/assets/images/small-images/blog-sm-03.jpg" alt="Post Images">
-                    </a>
-                </div>
-                <div class="post-content">
-                    <h6 class="title">
-                        <a href="post-details.html">
-                            How a developer and designer duo at Deutsche Bank keep
-                            remote
-                        </a>
-                    </h6>
-                    <div class="post-meta">
-                        <ul class="post-meta-list">
-                            <li>Feb 17, 2019</li>
-                            <li>300k Views</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single Post  -->
 
+                        <div class="post-content">
+                            <h6 class="title">
+                                <a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@post.Slug">
+                                    @post.Title
+                                </a>
+                            </h6>
+                            <div class="post-meta">
+                                <ul class="post-meta-list">
+                                    <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
+                                    <li>@post.Comments!.Count comments</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            }
         </div>
         <!-- End Post List  -->
-
     </div>
     <!-- End Single Widget  -->
+
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_postlist mb--30">
+        <h5 class="widget-title">Most Recent Posts</h5>
+
+        <!-- Start Post List  -->
+        <div class="post-medium-block">
+            @foreach (BlogPost post in (await BlogPostService.GetRecentBlogPostsAsync(3)))
+            {
+                <!-- Start Single Post  -->
+                <div class="content-block post-medium mb--20">
+                    <div class="post-thumbnail">
+                        <a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@post.Slug">
+                            <img src="@ImageService.ConvertByteArrayToFile(post.ImageData!, post.ImageType!, (int)DefaultImage.BlogPostImage)" alt="blog post pictures">
+                        </a>
+                    </div>
+
+                        <div class="post-content">
+                            <h6 class="title">
+                                <a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@post.Slug">
+                                    @post.Title
+                                </a>
+                            </h6>
+                            <div class="post-meta">
+                                <ul class="post-meta-list">
+                                    <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
+                                    <li>@post.Comments!.Count comments</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            }
+        </div>
+        <!-- End Post List  -->
+    </div>
+    <!-- End Single Widget  -->
+
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_social mb--30">
         <h5 class="widget-title">Stay In Touch</h5>
@@ -153,6 +127,7 @@
         <!-- End Post List  -->
     </div>
     <!-- End Single Widget  -->
+
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_instagram mb--30">
         <h5 class="widget-title">Instagram</h5>
@@ -192,5 +167,6 @@
         <!-- End Post List  -->
     </div>
     <!-- End Single Widget  -->
+
 </div>
 <!-- End Sidebar Area  -->

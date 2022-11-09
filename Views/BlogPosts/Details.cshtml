@@ -94,7 +94,7 @@
 }
 
 <div class="row">
-    @foreach (Comment comment in Model.Comments)
+    @foreach (Comment comment in Model.Comments.OrderByDescending(@comment => comment.DateCreated))
     {
         <li>@comment.Body</li>
     }

@@ -77,8 +77,6 @@ namespace BlogMVC.Controllers
                 // DateCreated
                 comment.DateCreated = DateTime.UtcNow;
 
-                // TODO: Slug
-
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "BlogPosts", new { slug });
