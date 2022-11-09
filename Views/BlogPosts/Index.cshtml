@@ -82,7 +82,7 @@
                 @Html.DisplayFor(modelItem => item.Category!.Name)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-action="Details" asp-route-slug="@item.Slug">Details</a>
                 @if (User.IsInRole("Administrator")) 
                 {
                     <span>|</span>

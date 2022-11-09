@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BlogMVC.Data;
 using BlogMVC.Models;
 using BlogMVC.Services.Interfaces;
-using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
+using BlogMVC.Extensions;
 
 namespace BlogMVC.Controllers
 {
@@ -19,13 +19,16 @@ namespace BlogMVC.Controllers
         // injections
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
+        private readonly IBlogPostService _blogPostService;
 
         public BlogPostsController(ApplicationDbContext context,
-                                   IImageService ImageService)
+                                   IImageService imageService,
+                                   IBlogPostService blogPostService)
         {
             // assign injected values
             _context = context;
-            _imageService = ImageService;
+            _imageService = imageService;
+            _blogPostService = blogPostService;
         }
 
         // GET: BlogPosts
@@ -38,18 +41,18 @@ namespace BlogMVC.Controllers
 
         // GET: BlogPosts/Details/5
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? slug)
         {
-            if (id == null || _context.BlogPosts == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
             var blogPost = await _context.BlogPosts
-                .Include(b => b.Category)
-                .Include(b => b.Comments)
-                     .ThenInclude(c => c.Author)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                            .Include(b => b.Category)
+                                            .Include(b => b.Comments)
+                                                .ThenInclude(c => c.Author)
+                                            .FirstOrDefaultAsync(m => m.Slug == slug);
 
             if (blogPost == null)
             {
@@ -75,6 +78,15 @@ namespace BlogMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                // check to see if there is a Slug
+                if (!await _blogPostService.ValidateSlugAsync(blogPost.Title!, blogPost.Id))
+                {
+                    ModelState.AddModelError("Title", "A similar Title or Slug has already been used!");
+                    ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
+                    return View(blogPost);
+                }
+                blogPost.Slug = blogPost.Title!.Slugify();
+
                 // set dateCreated
                 blogPost.DateCreated = DateTime.UtcNow;
 
@@ -128,6 +140,15 @@ namespace BlogMVC.Controllers
             {
                 try
                 {
+                    // check to see if there is a Slug
+                    if (!await _blogPostService.ValidateSlugAsync(blogPost.Title!, blogPost.Id))
+                    {
+                        ModelState.AddModelError("Title", "A similar Title or Slug has already been used!");
+                        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
+                        return View(blogPost);
+                    }
+                    blogPost.Slug = blogPost.Title!.Slugify();
+
                     // set DateCreated
                     blogPost.DateCreated = DateTime.SpecifyKind(blogPost.DateCreated, DateTimeKind.Utc);
 

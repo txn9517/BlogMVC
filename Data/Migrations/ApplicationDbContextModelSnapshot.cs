@@ -102,9 +102,6 @@ namespace BlogMVC.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("text");
-
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("bytea");
 

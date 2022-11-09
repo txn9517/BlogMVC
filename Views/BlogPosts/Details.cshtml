@@ -79,6 +79,7 @@
         <div class="col-md-4">
             <form asp-action="Create" asp-controller="Comments" method="post">
                 <input type="hidden" asp-for="Id" name="BlogPostId" />
+                <input type="hidden" asp-for="Slug" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label class="control-label">Add a Comment</label>

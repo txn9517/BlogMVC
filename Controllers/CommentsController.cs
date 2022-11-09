@@ -65,7 +65,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogPostId,Body")] Comment comment)
+        public async Task<IActionResult> Create([Bind("Id,BlogPostId,Body")] Comment comment, string? slug)
         {
             // remove the author id
             ModelState.Remove("AuthorId");
@@ -81,7 +81,7 @@ namespace BlogMVC.Controllers
 
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "BlogPosts", new { id=comment.BlogPostId });
+                return RedirectToAction("Details", "BlogPosts", new { slug });
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);

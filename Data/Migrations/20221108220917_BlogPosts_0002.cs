@@ -9,6 +9,10 @@ namespace BlogMVC.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "FullName",
+                table: "AspNetUsers");
+
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastUpdated",
                 table: "BlogPosts",
@@ -29,6 +33,12 @@ namespace BlogMVC.Data.Migrations
                 oldClrType: typeof(DateTime),
                 oldType: "timestamp with time zone",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "FullName",
+                table: "AspNetUsers",
+                type: "text",
+                nullable: true);
         }
     }
 }

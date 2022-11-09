@@ -18,11 +18,11 @@ namespace BlogMVC.Controllers
         private readonly IImageService _imageService;
 
         public CategoriesController(ApplicationDbContext context, 
-                                    IImageService ImageService)
+                                    IImageService imageService)
         {
             // assign injected values
             _context = context;
-            _imageService = ImageService;
+            _imageService = imageService;
         }
 
         // GET: Categories
