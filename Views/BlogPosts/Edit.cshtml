@@ -23,18 +23,15 @@
                     <input type="hidden" asp-for="ImageType" />
                     <input type="hidden" asp-for="Slug" />
 
-                    @*
-                    <div class="col-12 col-lg-4">
-                    <div class="square-img-container">
-                    <img class="square-img" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType)" id="blogImage" />
+                    @*TODO: add Image*@
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="BlogPostImage" class="control-label">Upload an Image</label>
+                            <img id="blogPostImage" class="img-fluid" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogPostImage)" alt="blog post picture" />
+                            <input asp-for="BlogPostImage" class="form-control" accept=".png,.jpg,.jpeg,.gif"
+                                   onchange="document.getElementById('blogPostImage'.src=window.URL.createObjectURL(this,files[0])" />
+                        </div>
                     </div>
-                    <div>
-                    <label asp-for="ImageFile" class="control-label">Blog Image</label>
-                    <input asp-for="ImageFile" type="file" class="form-control" accept=".png,.jpg,.jpeg,.gif"
-                    onchange="document.getElementById('blogImage').src=window.URL.createObjectURL(this.files[0])" />
-                    </div>
-                    </div>
-                    *@
 
                     <div class="form-group">
                         <label asp-for="Title" class="control-label"></label>
@@ -51,13 +48,10 @@
                         <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
-                    @* Delete?
                     <div class="form-group">
-                    <label asp-for="Slug" class="control-label"></label>
-                    <input asp-for="Slug" class="form-control" />
-                    <span asp-validation-for="Slug" class="text-danger"></span>
+                        <label asp-for="Tags" class="control-label"></label>
+                        <select name="SelectedTags" class="form-control" asp-items="ViewBag.BlogPostTags" multiple></select>
                     </div>
-                    *@
                     <div class="form-group">
                         <label asp-for="Abstract" class="control-label"></label>
                         <input asp-for="Abstract" class="form-control" />
@@ -67,17 +61,11 @@
                         <input class="form-check-input" asp-for="IsDeleted" />
                         <label class="form-check-label" asp-for="IsDeleted"></label>
                         <span asp-validation-for="IsDeleted" class="text-danger"></span>
-                    </div><div class="form-group form-check">
+                    </div>
+                    <div class="form-group form-check">
                         <input class="form-check-input" asp-for="IsPublished" />
                         <label class="form-check-label" asp-for="IsPublished"></label>
                         <span asp-validation-for="IsPublished" class="text-danger"></span>
-                    </div>
-                    @*TODO: add Image*@
-                    <div class="form-group">
-                        <label asp-for="BlogPostImage" class="control-label"></label>
-                        <img id="blogPostImage" class="img-fluid" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogPostImage)" alt="blog post picture"  />
-                        <input asp-for="BlogPostImage" class="form-control" accept=".png,.jpg,.jpeg,.gif"
-                               onchange="document.getElementById('blogPostImage'.src=window.URL.createObjectURL(this,files[0])" />
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-primary rounded-pill my-2 btnLink" />

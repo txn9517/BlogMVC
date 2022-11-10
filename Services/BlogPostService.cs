@@ -130,7 +130,9 @@ namespace BlogMVC.Services
         {
             try
             {
-                return await _context.Tags.ToListAsync();
+                return await _context.Tags
+                                        .Include(t => t.BlogPosts)
+                                        .ToListAsync();
 
             } catch (Exception)
             {
@@ -138,10 +140,48 @@ namespace BlogMVC.Services
             }
         }
 
-        // creating a contact, add to category right away
-        public async Task<List<Tag>> GetBlogPostTags(int blogPostId)
+        public async Task AddTagsToBlogPostsAsync(IEnumerable<int> tagIds, int blogPostId)
         {
-            return await _context.Tags.ToListAsync();
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts.FindAsync(blogPostId);
+
+                foreach (int tagId in tagIds)
+                {
+                    Tag? tag = await _context.Tags.FindAsync(tagId);
+
+                    if (blogPost != null && tag != null)
+                    {
+                        blogPost.Tags.Add(tag);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveAllBlogPostTagsAsync(int blogPostId)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts
+                                                 .Include(b => b.Tags)
+                                                 .FirstOrDefaultAsync(b => b.Id == blogPostId);
+
+                blogPost!.Tags.Clear();
+                _context.Update(blogPost);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

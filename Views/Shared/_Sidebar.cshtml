@@ -10,8 +10,10 @@
 <!-- Start Sidebar Area  -->
 <div class="sidebar-inner">
 
+    <!-- Category -->
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_categories mb--30">
+        <h5 class="widget-title">Categories</h5>
         <ul>
             @foreach (Category item in (await BlogPostService.GetCategoriesAsync()).Take(4)) {
                     <li class="cat-item">
@@ -29,6 +31,7 @@
     </div>
     <!-- End Single Widget  -->
 
+    <!-- Search -->
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_search mb--30">
         <h5 class="widget-title">Search</h5>
@@ -41,6 +44,7 @@
     </div>
     <!-- End Single Widget  -->
 
+    <!-- Most Popular Posts -->
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_postlist mb--30">
         <h5 class="widget-title">Popular on Tom's Tech Blog</h5>
@@ -77,6 +81,7 @@
     </div>
     <!-- End Single Widget  -->
 
+    <!-- Recent Blog Posts -->
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_postlist mb--30">
         <h5 class="widget-title">Most Recent Posts</h5>
@@ -110,6 +115,25 @@
             }
         </div>
         <!-- End Post List  -->
+    </div>
+    <!-- End Single Widget  -->
+
+    <!-- Tags -->
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_categories mb--30">
+        <h5 class="widget-title">Tags</h5>
+        <ul>
+            @foreach (Tag item in (await BlogPostService.GetTagsAsync()).Take(4))
+            {
+                <li class="cat-item">
+                    <a asp-controller="Home" asp-action="Index" asp-route-id="@item.Id" class="inner">
+                        <div class="content">
+                            <h5 class="title">@item.Name</h5>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
     </div>
     <!-- End Single Widget  -->
 

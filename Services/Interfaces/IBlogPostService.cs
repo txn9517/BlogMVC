@@ -23,7 +23,10 @@ namespace BlogMVC.Services.Interfaces
         // get tags
         public Task<List<Tag>> GetTagsAsync();
 
-        // get blog post tags
-        public Task<List<Tag>> GetBlogPostTags(int blogPostId);
+        // add tags to blog posts
+        public Task AddTagsToBlogPostsAsync(IEnumerable<int> tagIds, int blogPostId);
+
+        // remove all tags
+        public Task RemoveAllBlogPostTagsAsync(int blogPostId);
     }
 }
