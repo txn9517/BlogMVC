@@ -4,6 +4,7 @@ using BlogMVC.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using X.PagedList;
 
 namespace BlogMVC.Controllers
 {
@@ -24,12 +25,16 @@ namespace BlogMVC.Controllers
             _blogPostService = blogPostService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNum)
         {
-            // using a service to read in all blog posts
-            List<BlogPost> model = (await _blogPostService.GetAllBlogPostsAsync())
-                                    .Where(b => b.IsDeleted == false && b.IsPublished == true)
-                                    .ToList();
+            // add page list functionality
+            int pageSize = 5;
+            // if pageNum is null, set equal to 1
+            int page = pageNum ?? 1;
+
+            IPagedList<BlogPost> model = (await _blogPostService.GetAllBlogPostsAsync())
+                                                                    .Where(b => b.IsDeleted == false && b.IsPublished == true)
+                                                                    .ToPagedList(page, pageSize);
 
             return View(model);
         }

@@ -1,7 +1,11 @@
-﻿@model IEnumerable<BlogMVC.Models.BlogPost>
+﻿@model IPagedList<BlogMVC.Models.BlogPost>
+@using X.PagedList
 @using BlogMVC.Services.Interfaces
 @using BlogMVC.Enums
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
 @inject IImageService ImageService
+@inject IBlogPostService BlogPostService
 
 @{
     ViewData["Title"] = "Home";
@@ -22,7 +26,7 @@
                         <div class="media-body">
                             <div class="author-info">
                                 <h1 class="title"><a href="#">Tom Nguyen</a></h1>
-                                <span class="b3 subtitle">Full Stack Software Engineer</span>
+                                <span class="b3 subtitle">Full Stack Software Developer</span>
                             </div>
                             <div class="content">
                                 <p class="b1 description">At 40+ years old, my favorite compliment is being told that I look like my mom. Seeing myself in her image, like this daughter up top, makes me so proud of how far I’ve come, and so thankful for where I come from</p>
@@ -102,7 +106,17 @@
                     </div>
                     <!-- End Post List  -->
                 }
+
+                <!-- add page list -->
+                <div>
+                    Page @(Model.PageCount < Model.PageNumber ? 1 : Model.PageNumber) of @Model.PageCount
+                </div>
+                <div>
+                    @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }))
+                </div>
+
             </div>
+            <!-- add sidebar partial -->
             <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
                 <partial name="_Sidebar" />
             </div>
