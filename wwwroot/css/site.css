@@ -32,6 +32,21 @@ body {
     --tn-body-font: 'Roboto', sans-serif;
 }
 
+.authorImg {
+    height: 50px;
+    width: 50px;
+}
+
+.authorBioImg {
+    height: 100px;
+    width: 100px;
+}
+
+.authorCommentImg {
+    height: 60px;
+    width: 60px;
+}
+
 /*html, body {
     height: 100%;
 }*/

@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Authorization;
 using BlogMVC.Extensions;
 using BlogMVC.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Drawing.Printing;
+using X.PagedList;
 
 namespace BlogMVC.Controllers
 {

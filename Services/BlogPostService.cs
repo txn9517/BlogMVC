@@ -2,10 +2,13 @@
 using BlogMVC.Extensions;
 using BlogMVC.Models;
 using BlogMVC.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogMVC.Services
 {
+    // implementations of the action methods
     public class BlogPostService : IBlogPostService
     {
         // inject database
@@ -180,6 +183,49 @@ namespace BlogMVC.Services
 
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<BlogPost> SearchBlogPosts(string searchStr)
+        {
+            try
+            {
+                IEnumerable<BlogPost> blogPosts = new List<BlogPost>();
+
+                if (string.IsNullOrEmpty(searchStr))
+                {
+                    return blogPosts;
+                }
+                else
+                {
+                    // removes any leading or trailing whitespace
+                    searchStr = searchStr.Trim().ToLower();
+
+                    // attach the following attributes to the search
+                    blogPosts = _context.BlogPosts.Where(b => b.Title!.ToLower().Contains(searchStr) ||
+                                                        b.Abstract!.ToLower().Contains(searchStr) ||
+                                                        b.Content!.ToLower().Contains(searchStr) ||
+                                                        b.Category!.Name!.ToLower().Contains(searchStr) ||
+                                                        b.Comments.Any(c => c.Body!.ToLower().Contains(searchStr) ||
+                                                                            c.Author!.FirstName!.ToLower().Contains(searchStr) ||
+                                                                            c.Author!.LastName!.ToLower().Contains(searchStr) ) ||
+                                                        b.Tags!.Any(t => t.Name!.ToLower().Contains(searchStr) ) )
+                                                    .Where(b => b.IsDeleted == false && b.IsPublished == true)
+                                                    .Include(b => b.Comments)
+                                                        .ThenInclude(c => c.Author)
+                                                    .Include(b => b.Category)
+                                                    .Include(b => b.Tags)
+                                                    .Include(b => b.Creator)
+                                                    .AsNoTracking()
+                                                    .OrderByDescending(b => b.DateCreated)
+                                                    .AsEnumerable();
+
+                    return blogPosts;
+                }
+
+            } catch (Exception)
             {
                 throw;
             }

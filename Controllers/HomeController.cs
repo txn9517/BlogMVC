@@ -33,10 +33,26 @@ namespace BlogMVC.Controllers
             int page = pageNum ?? 1;
 
             IPagedList<BlogPost> model = (await _blogPostService.GetAllBlogPostsAsync())
-                                                                    .Where(b => b.IsDeleted == false && b.IsPublished == true)
-                                                                    .ToPagedList(page, pageSize);
+                                            .Where(b => b.IsDeleted == false && b.IsPublished == true)
+                                            .ToPagedList(page, pageSize);
 
             return View(model);
+        }
+
+        // add action for search
+        public async Task<IActionResult> SearchIndex(string searchStr, int? pageNum)
+        {
+            // add page list functionality
+            int pageSize = 5;
+            // if pageNum is null, set equal to 1
+            int page = pageNum ?? 1;
+
+            ViewData["SearchStr"] = searchStr;
+
+            IPagedList<BlogPost> model = _blogPostService.SearchBlogPosts(searchStr)
+                                                        .ToPagedList(page, pageSize);
+
+            return View(nameof(Index), model);
         }
 
         public IActionResult Privacy()

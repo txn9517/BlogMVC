@@ -62,7 +62,7 @@
                     </div>
                     <!-- End Single Widget  -->
 
-                    <!-- Start Single Widget  -->
+                    @*<!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_search mb--30">
                         <h5 class="widget-title">Search</h5>
                         <form action="#">
@@ -72,7 +72,7 @@
                             </div>
                         </form>
                     </div>
-                    <!-- End Single Widget  -->
+                    <!-- End Single Widget  -->*@
 
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_postlist mb--30">
@@ -451,7 +451,7 @@
                                         <div class="post-meta-wrapper">
                                             <div class="post-meta">
                                                 <div class="post-author-avatar border-rounded">
-                                                    <img src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogUserImage)" alt="Author Images">
+                                                    <img src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogUserImage)" class="authorImg" alt="Author Images">
                                                 </div>
                                                 <div class="content">
                                                     <h6 class="post-author-name">
@@ -522,7 +522,7 @@
                         <div class="media">
                             <div class="thumbnail">
                                 <a href="#">
-                                    <img src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogUserImage)" alt="Author Images">
+                                    <img src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogUserImage)" class="authorBioImg" alt="Author Images">
                                 </a>
                             </div>
                             <div class="media-body">
@@ -632,7 +632,7 @@
                                         <div class="comment-body">
                                             <div class="single-comment">
                                                 <div class="comment-img">
-                                                    <img src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogUserImage)" alt="Author Images">
+                                                    <img src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogUserImage)" class="authorCommentImg" alt="Author Images">
                                                 </div>
                                                 <div class="comment-inner">
                                                     <h6 class="commenter">

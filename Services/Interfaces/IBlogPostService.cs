@@ -28,5 +28,8 @@ namespace BlogMVC.Services.Interfaces
 
         // remove all tags
         public Task RemoveAllBlogPostTagsAsync(int blogPostId);
+
+        // search blog posts
+        public IEnumerable<BlogPost> SearchBlogPosts(string searchStr);
     }
 }
