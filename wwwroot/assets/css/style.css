@@ -112,6 +112,13 @@
 }
 
 /**
+ * CkEditor Style
+ */
+.ck-editor__editable_inline {
+    min-height: 500px;
+}
+
+/**
  * Reset Styels
  */
 * {
