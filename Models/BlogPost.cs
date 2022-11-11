@@ -11,6 +11,9 @@ namespace BlogMVC.Models
         public int Id { get; set; }
 
         [Required]
+        public string? CreatorId { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1} characters", MinimumLength = 2)]
         public string? Title { get; set; }
 
@@ -50,5 +53,8 @@ namespace BlogMVC.Models
 
         // add relationship to Tag model
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
+
+        // virtual object that will receive property based on CreatorId
+        public virtual BlogUser? Creator { get; set; }
     }
 }

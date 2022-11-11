@@ -25,7 +25,7 @@
                         </div>
                         <div class="media-body">
                             <div class="author-info">
-                                <h1 class="title"><a href="#">Tom Nguyen</a></h1>
+                                <h1 class="title"><a href="#">@Model.FirstOrDefault()?.Creator?.FullName</a></h1>
                                 <span class="b3 subtitle">Full Stack Software Developer</span>
                             </div>
                             <div class="content">
@@ -85,7 +85,7 @@
                                         <h6 class="post-author-name">
                                             <a class="hover-flip-item-wrapper">
                                                 <span class="hover-flip-item">
-                                                    <span data-text="Tom Nguyen">Tom Nguyen</span>
+                                                    <span data-text="@post.Creator?.FullName">@post.Creator?.FullName</span>
                                                 </span>
                                             </a>
                                         </h6>

@@ -11,25 +11,28 @@ using BlogMVC.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using BlogMVC.Extensions;
 using BlogMVC.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogMVC.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     public class BlogPostsController : Controller
     {
         // injections
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
         private readonly IBlogPostService _blogPostService;
+        private readonly UserManager<BlogUser> _userManager;
 
         public BlogPostsController(ApplicationDbContext context,
                                    IImageService imageService,
-                                   IBlogPostService blogPostService)
+                                   IBlogPostService blogPostService,
+                                   UserManager<BlogUser> userManager)
         {
             // assign injected values
             _context = context;
             _imageService = imageService;
             _blogPostService = blogPostService;
+            _userManager = userManager;
         }
 
         // GET: BlogPosts
@@ -65,6 +68,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: BlogPosts/Create
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Create()
         {
             BlogPost model = new BlogPost();
@@ -80,10 +84,16 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Create([Bind("Id,Title,Content,CategoryId,Abstract,IsDeleted,IsPublished,BlogPostImage")] BlogPost blogPost, IEnumerable<int> selectedTags)
         {
+            ModelState.Remove("CreatorId");
+
             if (ModelState.IsValid)
             {
+                // assign CreatorId
+                blogPost.CreatorId = _userManager.GetUserId(User);
+
                 // check to see if there is a Slug
                 if (!await _blogPostService.ValidateSlugAsync(blogPost.Title!, blogPost.Id))
                 {
@@ -120,6 +130,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: BlogPosts/Edit/5
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -150,6 +161,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,DateCreated,LastUpdated,CategoryId,Slug,Abstract,IsDeleted,IsPublished,ImageData,ImageType,BlogPostImage")] BlogPost blogPost, IEnumerable<int> selectedTags)
         {
             if (id != blogPost.Id)
@@ -211,6 +223,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: BlogPosts/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.BlogPosts == null)
@@ -232,6 +245,7 @@ namespace BlogMVC.Controllers
         // POST: BlogPosts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.BlogPosts == null)
@@ -241,7 +255,8 @@ namespace BlogMVC.Controllers
             var blogPost = await _context.BlogPosts.FindAsync(id);
             if (blogPost != null)
             {
-                _context.BlogPosts.Remove(blogPost);
+                // set deleted blog post to true
+                blogPost.IsDeleted = true;
             }
 
             await _context.SaveChangesAsync();

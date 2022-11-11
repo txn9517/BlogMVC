@@ -58,6 +58,7 @@ namespace BlogMVC.Services
                                                         .Include(b => b.Comments)
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Tags)
+                                                        .Include(b => b.Creator)
                                                         .OrderByDescending(b => b.DateCreated)
                                                         .ToListAsync();
 
