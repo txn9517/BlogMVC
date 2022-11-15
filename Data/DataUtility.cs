@@ -86,36 +86,42 @@ namespace BlogMVC.Data
         // creates demo login users
         private static async Task SeedUsersAsync(ApplicationDbContext context, IConfiguration config, UserManager<BlogUser> userManager)
         {
-            // creates an admin user
-            if (!context.Users.Any(u => u.Email == _adminEmail))
+            try
             {
-                BlogUser adminUser = new()
+                // creates an admin user
+                if (!context.Users.Any(u => u.Email == _adminEmail))
                 {
-                    UserName = _adminEmail,
-                    Email = _adminEmail,
-                    FirstName = "Tom",
-                    LastName = "Nguyen",
-                    EmailConfirmed = true
-                };
+                    BlogUser adminUser = new()
+                    {
+                        UserName = _adminEmail,
+                        Email = _adminEmail,
+                        FirstName = "Tom",
+                        LastName = "Nguyen",
+                        EmailConfirmed = true
+                    };
 
-                await userManager.CreateAsync(adminUser, config["AdminPassword"] ?? Environment.GetEnvironmentVariable("AdminPassword"));
-                await userManager.AddToRoleAsync(adminUser, _adminRole);
-            }
+                    await userManager.CreateAsync(adminUser, config["AdminPassword"] ?? Environment.GetEnvironmentVariable("AdminPassword"));
+                    await userManager.AddToRoleAsync(adminUser, _adminRole);
+                }
 
-            // creates a mod user
-            if (!context.Users.Any(u => u.Email == _modEmail))
+                // creates a mod user
+                if (!context.Users.Any(u => u.Email == _modEmail))
+                {
+                    BlogUser modUser = new()
+                    {
+                        UserName = _modEmail,
+                        Email = _modEmail,
+                        FirstName = "Mod",
+                        LastName = "User",
+                        EmailConfirmed = true
+                    };
+
+                    await userManager.CreateAsync(modUser, config["ModeratorPassword"] ?? Environment.GetEnvironmentVariable("ModeratorPassword"));
+                    await userManager.AddToRoleAsync(modUser, _modRole);
+                }
+            } catch (Exception)
             {
-                BlogUser modUser = new()
-                {
-                    UserName = _modEmail,
-                    Email = _modEmail,
-                    FirstName = "Mod",
-                    LastName = "User",
-                    EmailConfirmed = true
-                };
-
-                await userManager.CreateAsync(modUser, config["ModeratorPassword"] ?? Environment.GetEnvironmentVariable("ModeratorPassword"));
-                await userManager.AddToRoleAsync(modUser, _modRole);
+                throw;
             }
         }
     }

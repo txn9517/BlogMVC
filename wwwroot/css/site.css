@@ -50,6 +50,11 @@ body {
     width: 60px;
 }
 
+.authorHomeImg {
+    height: 100px;
+    width: 90px;
+}
+
 /*html, body {
     height: 100%;
 }*/
