@@ -72,9 +72,21 @@ body {
     background-color: var(--tn-primary-color);
 }*/
 
-.navShadow {
-    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+/*ul .textLight {
+    color: var(--tn-text-light-color);
 }
+
+li .myText{
+    color: var(--tn-text-light-color) !important;
+}*/
+
+/*.header {
+    background-color: var(--tn-primary-color);
+}*/
+
+/*.navShadow {
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+}*/
 
 /*.content {
     flex: 1 0 auto;

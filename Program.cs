@@ -62,7 +62,19 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
 });
 
+// allow DevPortfolio to make calls
+builder.Services.AddCors(obj =>
+{
+    obj.AddPolicy("DefaultPolicy",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
 var app = builder.Build();
+
+// use policy
+app.UseCors("DefaultPolicy");
 
 // TODO: call ManageDataAsync
 var scope = app.Services.CreateScope();

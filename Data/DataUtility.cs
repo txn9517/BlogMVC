@@ -13,9 +13,8 @@ namespace BlogMVC.Data
         // roles
         private const string _adminRole = "Administrator";
         private const string _modRole = "Moderator";
-        // TODO: change to real email when deploying to Railway
-        private const string _adminEmail = "tnguyen@mailinator.com";
-        private const string _modEmail = "ttbmoderator@mailinator.com";
+        private const string _adminEmail = "tndallas9517@gmail.com";
+        private const string _modEmail = "txn0864@yahoo.com";
 
         // begin setting up connection to db
         public static string GetConnectionString(IConfiguration config)

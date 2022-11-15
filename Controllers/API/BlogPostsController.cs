@@ -39,9 +39,11 @@ namespace BlogMVC.Controllers.API
             // is num 0? if not, set to 3, otherwise use num
             num = num == 0 ? 3 : num;
 
-            List<BlogPost> blogPosts = await _blogPostService.GetRecentBlogPostsAsync(num);
-
-            return blogPosts;
+            return await _context.BlogPosts
+                                .Where(b=> b.IsDeleted == false && b.IsPublished == true)
+                                .OrderByDescending(b => b.DateCreated)
+                                .Take(num)
+                                .ToListAsync();
         }
 
         // GET: api/BlogPosts/5
