@@ -60,6 +60,7 @@ namespace BlogMVC.Controllers
                                             .Include(b => b.Category)
                                             .Include(b => b.Comments)
                                                 .ThenInclude(c => c.Author)
+                                            .Include(b => b.Tags)
                                             .FirstOrDefaultAsync(m => m.Slug == slug);
 
             if (blogPost == null)

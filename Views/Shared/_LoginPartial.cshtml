@@ -11,7 +11,7 @@
 {
     <form id="logoutForm" class="d-none" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
     </form>
-    <li class="menu-item-has-children pe-5">
+    <li class="menu-item-has-children pe-2">
         @* display the logged in user *@
         <a class="ps-2" href="#">Hello, @blogUser.FullName!</a>
         <ul class="axil-submenu" style="min-width: 0px !important;width: 100%">

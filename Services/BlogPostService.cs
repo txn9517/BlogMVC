@@ -150,7 +150,7 @@ namespace BlogMVC.Services
             {
                 BlogPost? blogPost = await _context.BlogPosts.FindAsync(blogPostId);
 
-                foreach (int tagId in tagIds)
+                foreach(int tagId in tagIds)
                 {
                     Tag? tag = await _context.Tags.FindAsync(tagId);
 
@@ -230,5 +230,22 @@ namespace BlogMVC.Services
                 throw;
             }
         }
+
+        //public async Task<List<BlogPost>> GetBlogPostsCategory()
+        //{
+        //    try
+        //    {
+        //        List<BlogPost> blogPosts = await _context.BlogPosts
+        //                                                    .Where(b => b.IsDeleted == false && b.IsPublished == true)
+        //                                                    .Include(b => b.CategoryId)
+        //                                                    .ToListAsync();
+
+        //        return blogPosts;
+
+        //    } catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 }

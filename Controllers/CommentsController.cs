@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BlogMVC.Data;
 using BlogMVC.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace BlogMVC.Controllers
 {
@@ -29,13 +31,14 @@ namespace BlogMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Comments.Include(c => c.Author).Include(c => c.BlogPost);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Comments == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -44,6 +47,7 @@ namespace BlogMVC.Controllers
                 .Include(c => c.Author)
                 .Include(c => c.BlogPost)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (comment == null)
             {
                 return NotFound();
@@ -89,19 +93,32 @@ namespace BlogMVC.Controllers
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Comments == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var comment = await _context.Comments.FindAsync(id);
+
             if (comment == null)
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
-            ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
-            return View(comment);
+
+            // if user is NOT admin or mod
+            // if user wrote comment, let them edit
+            // return error
+            if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || comment.AuthorId == _userManager.GetUserId(User))
+            {
+                ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
+                ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
+
+                return View(comment);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         // POST: Comments/Edit/5
@@ -109,11 +126,17 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BlogPostId,AuthorId,DateCreated,LastUpdated,UpdateReason,Body")] Comment comment)
         {
             if (id != comment.Id)
             {
                 return NotFound();
+            }
+
+            if (!User.IsInRole("Administrator") && User.IsInRole("Moderator") && comment.AuthorId == _userManager.GetUserId(User))
+            {
+                return Unauthorized();
             }
 
             if (ModelState.IsValid)
@@ -142,6 +165,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Comments/Delete/5
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Comments == null)
@@ -164,6 +188,7 @@ namespace BlogMVC.Controllers
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Comments == null)

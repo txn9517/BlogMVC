@@ -3,7 +3,6 @@
 @inject IImageService ImageService
 @inject IBlogPostService BlogPostService
 
-
 @{
 }
 
@@ -15,17 +14,18 @@
     <div class="axil-single-widget widget widget_categories mb--30">
         <h5 class="widget-title">Categories</h5>
         <ul>
-            @foreach (Category item in (await BlogPostService.GetCategoriesAsync()).Take(4)) {
-                    <li class="cat-item">
-                        <a asp-controller="Home" asp-action="Index" asp-route-id="@item.Id" class="inner">
-                            <div class="thumbnail">
-                                <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.CategoryImage)" alt="category pictures">
-                            </div>
-                            <div class="content">
-                                <h5 class="title">@item.Name</h5>
-                            </div>
-                        </a>
-                    </li>
+            @foreach (Category item in (await BlogPostService.GetCategoriesAsync()).Take(4))
+            {
+                <li class="cat-item">
+                    <a asp-controller="Categories" asp-action="Details" asp-route-id="@item.Id" class="inner">
+                        <div class="thumbnail">
+                            <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.CategoryImage)" alt="category pictures">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">@item.Name</h5>
+                        </div>
+                    </a>
+                </li>
             }
         </ul>
     </div>
@@ -34,13 +34,13 @@
     @*<!-- Search -->
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_search mb--30">
-        <h5 class="widget-title">Search</h5>
-        <form action="#">
-            <div class="axil-search form-group">
-                <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
-                <input type="text" class="form-control" placeholder="Search">
-            </div>
-        </form>
+    <h5 class="widget-title">Search</h5>
+    <form action="#">
+    <div class="axil-search form-group">
+    <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
+    <input type="text" class="form-control" placeholder="Search">
+    </div>
+    </form>
     </div>
     <!-- End Single Widget  -->*@
 
@@ -61,20 +61,20 @@
                         </a>
                     </div>
 
-                        <div class="post-content">
-                            <h6 class="title">
-                                <a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@post.Slug">
-                                    @post.Title
-                                </a>
-                            </h6>
-                            <div class="post-meta">
-                                <ul class="post-meta-list">
-                                    <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
-                                    <li>@post.Comments!.Count comments</li>
-                                </ul>
-                            </div>
+                    <div class="post-content">
+                        <h6 class="title">
+                            <a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@post.Slug">
+                                @post.Title
+                            </a>
+                        </h6>
+                        <div class="post-meta">
+                            <ul class="post-meta-list">
+                                <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
+                                <li>@post.Comments!.Count comments</li>
+                            </ul>
                         </div>
                     </div>
+                </div>
             }
         </div>
         <!-- End Post List  -->
@@ -98,20 +98,20 @@
                         </a>
                     </div>
 
-                        <div class="post-content">
-                            <h6 class="title">
-                                <a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@post.Slug">
-                                    @post.Title
-                                </a>
-                            </h6>
-                            <div class="post-meta">
-                                <ul class="post-meta-list">
-                                    <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
-                                    <li>@post.Comments!.Count comments</li>
-                                </ul>
-                            </div>
+                    <div class="post-content">
+                        <h6 class="title">
+                            <a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@post.Slug">
+                                @post.Title
+                            </a>
+                        </h6>
+                        <div class="post-meta">
+                            <ul class="post-meta-list">
+                                <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
+                                <li>@post.Comments!.Count comments</li>
+                            </ul>
                         </div>
                     </div>
+                </div>
             }
         </div>
         <!-- End Post List  -->
@@ -123,10 +123,10 @@
     <div class="axil-single-widget widget widget_categories mb--30">
         <h5 class="widget-title">Tags</h5>
         <ul>
-            @foreach (Tag item in (await BlogPostService.GetTagsAsync()).Take(4))
+            @foreach (Tag item in (await BlogPostService.GetTagsAsync()).Take(100))
             {
                 <li class="cat-item">
-                    <a asp-controller="Home" asp-action="Index" asp-route-id="@item.Id" class="inner">
+                    <a asp-controller="Tags" asp-action="Details" asp-route-id="@item.Id" class="inner">
                         <div class="content">
                             <h5 class="title">@item.Name</h5>
                         </div>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlogMVC.Data;
 using BlogMVC.Models;
+using X.PagedList;
 
 namespace BlogMVC.Controllers
 {
@@ -26,21 +27,34 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Tags/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? pageNum)
         {
-            if (id == null || _context.Tags == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var tag = await _context.Tags
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tag == null)
+            // add page list functionality
+            int pageSize = 5;
+            // if pageNum is null, set equal to 1
+            int page = pageNum ?? 1;
+
+            // get the blog posts for specific tag
+            // TODO: check this
+            IPagedList<BlogPost> blogPosts = _context.BlogPosts
+                                                    .Where(b => b.IsDeleted == false && b.IsPublished == true)
+                                                    .Include(b => b.Category)
+                                                    .Include(b => b.Comments)
+                                                    .Include(b => b.Tags)
+                                                    .OrderByDescending(b => b.DateCreated)
+                                                    .ToPagedList(page, pageSize);
+
+            if (blogPosts == null)
             {
                 return NotFound();
             }
 
-            return View(tag);
+            return View(blogPosts);
         }
 
         // GET: Tags/Create
@@ -74,6 +88,7 @@ namespace BlogMVC.Controllers
             }
 
             var tag = await _context.Tags.FindAsync(id);
+
             if (tag == null)
             {
                 return NotFound();
@@ -126,6 +141,7 @@ namespace BlogMVC.Controllers
 
             var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (tag == null)
             {
                 return NotFound();

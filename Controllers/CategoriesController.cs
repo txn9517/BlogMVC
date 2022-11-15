@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BlogMVC.Data;
 using BlogMVC.Models;
 using BlogMVC.Services.Interfaces;
+using BlogMVC.Services;
+using X.PagedList;
 
 namespace BlogMVC.Controllers
 {
@@ -32,21 +34,33 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? pageNum)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            // add page list functionality
+            int pageSize = 5;
+            // if pageNum is null, set equal to 1
+            int page = pageNum ?? 1;
+
+            // get the blog posts for specific category
+            IPagedList<BlogPost> blogPosts = _context.BlogPosts
+                                                    .Where(b => b.CategoryId == id && b.IsDeleted == false && b.IsPublished == true)
+                                                    .Include(b => b.Comments)
+                                                    .Include(b => b.Category)
+                                                    .Include(b => b.Tags)
+                                                    .OrderByDescending(b => b.DateCreated)
+                                                    .ToPagedList(page, pageSize);
+
+            if (blogPosts == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(blogPosts);
         }
 
         // GET: Categories/Create
@@ -89,6 +103,7 @@ namespace BlogMVC.Controllers
             }
 
             var category = await _context.Categories.FindAsync(id);
+
             if (category == null)
             {
                 return NotFound();
@@ -150,6 +165,7 @@ namespace BlogMVC.Controllers
 
             var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (category == null)
             {
                 return NotFound();
@@ -167,7 +183,9 @@ namespace BlogMVC.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
             }
+
             var category = await _context.Categories.FindAsync(id);
+
             if (category != null)
             {
                 _context.Categories.Remove(category);

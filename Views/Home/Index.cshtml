@@ -11,6 +11,8 @@
     ViewData["Title"] = "Home";
 }
 
+<!-- Home Index -->
+
 <!-- Start Author Area  -->
 <div class="axil-author-area axil-author-banner bg-color-grey">
     <div class="container">
@@ -33,7 +35,7 @@
                                 <ul class="social-share-transparent size-md">
                                     <li><a href="https://www.linkedin.com/in/txn9517"><i class="fab fa-linkedin-in"></i></a></li>
                                     <li><a href="https://github.com/tn2690/"><i class="fab fa-github"></i></a></li>
-                                    <li><a href="#"><i class="far fa-envelope"></i></a></li>
+                                    <li><a href="mailto:tnguyen@mailinator.com"><i class="far fa-envelope"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -111,8 +113,13 @@
                 <div>
                     Page @(Model.PageCount < Model.PageNumber ? 1 : Model.PageNumber) of @Model.PageCount
                 </div>
-                <div>
-                    @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }))
+                <div id="page-selector" class="my-5 py-5">
+                    @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }),
+                    new PagedListRenderOptions {
+                        ContainerDivClasses = new string[] { },
+                        UlElementClasses = new string[] { "social-icon", "justify-content-center" },
+                        LiElementClasses = new string[] { "fab", "fw-bold" },
+                    })
                 </div>
 
             </div>

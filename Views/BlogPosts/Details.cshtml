@@ -8,6 +8,8 @@
     ViewData["Title"] = "Details";
 }
 
+<!-- BlogPost Details -->
+
 <!-- Start Post Single Wrapper  -->
 <div class="post-single-wrapper axil-section-gap bg-color-white">
     <div class="container">
@@ -61,16 +63,15 @@
                         </ul>
                     </div>
                     <!-- End Single Widget  -->
-
                     @*<!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_search mb--30">
-                        <h5 class="widget-title">Search</h5>
-                        <form action="#">
-                            <div class="axil-search form-group">
-                                <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
-                                <input type="text" class="form-control" placeholder="Search">
-                            </div>
-                        </form>
+                    <h5 class="widget-title">Search</h5>
+                    <form action="#">
+                    <div class="axil-search form-group">
+                    <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
+                    <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    </form>
                     </div>
                     <!-- End Single Widget  -->*@
 
@@ -152,7 +153,6 @@
 
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_newsletter mb--30">
                         <!-- Start Post List  -->
@@ -171,7 +171,6 @@
                         <!-- End Post List  -->
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_ads mb--30">
                         <!-- Start Post List  -->
@@ -183,7 +182,6 @@
                         <!-- End Post List  -->
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_social mb--30">
                         <h5 class="widget-title">Stay In Touch</h5>
@@ -198,7 +196,6 @@
                         <!-- End Post List  -->
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_instagram mb--30">
                         <h5 class="widget-title">Instagram</h5>
@@ -238,7 +235,6 @@
                         <!-- End Post List  -->
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_archive mb--30">
                         <h5 class="widget-title">Archives</h5>
@@ -252,7 +248,6 @@
                         <!-- End Post List  -->
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_video mb--30">
                         <h5 class="widget-title">Featured Videos</h5>
@@ -317,7 +312,6 @@
                         <!-- End Post List  -->
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_tag_cloud mb--30">
                         <h5 class="widget-title">Archives</h5>
@@ -332,7 +326,6 @@
                         <!-- End Post List  -->
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_dropdown mb--30">
                         <h5 class="widget-title">Archives</h5>
@@ -349,7 +342,6 @@
                         <!-- End Post List  -->
                     </div>
                     <!-- End Single Widget  -->
-
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_postlist mb--30">
                         <h5 class="widget-title">Recent Post</h5>
@@ -374,7 +366,6 @@
                                 </div>
                             </div>
                             <!-- End Single Post  -->
-
                             <!-- Start Single Post  -->
                             <div class="content-block post-medium mb--20">
                                 <div class="post-content">
@@ -390,7 +381,6 @@
                                 </div>
                             </div>
                             <!-- End Single Post  -->
-
                             <!-- Start Single Post  -->
                             <div class="content-block post-medium">
                                 <div class="post-content">
@@ -489,21 +479,21 @@
                         @Model.Abstract
                     </p>
                     @*<figure class="wp-block-image">
-                        <img src="assets/images/post-single/post-single-05.jpg" alt="Post Images">
-                        <figcaption>
-                            The Apple Design Award trophy, created by the Apple Design team, is a symbol
-                            of achievement and excellence.
-                        </figcaption>
+                    <img src="assets/images/post-single/post-single-05.jpg" alt="Post Images">
+                    <figcaption>
+                    The Apple Design Award trophy, created by the Apple Design team, is a symbol
+                    of achievement and excellence.
+                    </figcaption>
                     </figure>*@
 
                     <!-- display each tag -->
-                    
-                        <div class="tagcloud">
-                            @foreach(Tag tag in Model.Tags) {
-                                <a href="#">@tag.Name</a>
-                            }
-                        </div>
-                    
+                    <!-- check this -->
+                    <div class="tagcloud mt-3">
+                        @foreach (Tag tag in Model.Tags)
+                        {
+                            <a asp-controller="Tags" asp-action="Details" asp-route-id=@tag.Id>@tag.Name</a>
+                        }
+                    </div>
 
                     <div class="social-share-block">
                         <div class="post-like">
@@ -552,7 +542,6 @@
                         </div>
                     </div>
                     <!-- End Author  -->
-
                     <!-- Start Comment Form Area  -->
                     <div class="axil-comment-area">
                         <div class="axil-total-comment-post">
@@ -620,93 +609,7 @@
                         }
 
                         <!-- Start Comment Area  -->
-                        <div class="axil-comment-area">
-                            <h4 class="title">@Model.Comments!.Count comments</h4>
-                            <ul class="comment-list">
-                                
-                                <!-- display each comment -->
-                                @foreach(Comment comment in Model.Comments.OrderByDescending(comment => comment.DateCreated))
-                                {
-                                    <!-- Start Single Comment  -->
-                                    <li class="comment">
-                                        <div class="comment-body">
-                                            <div class="single-comment">
-                                                <div class="comment-img">
-                                                    <img src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogUserImage)" class="authorCommentImg" alt="Author Images">
-                                                </div>
-                                                <div class="comment-inner">
-                                                    <h6 class="commenter">
-                                                        <a class="hover-flip-item-wrapper" href="#">
-                                                            <span class="hover-flip-item">
-                                                                <span data-text="@comment.Author?.FullName">@comment.Author?.FullName</span>
-                                                            </span>
-                                                        </a>
-                                                    </h6>
-                                                    <div class="comment-meta">
-                                                        <div class="time-spent">@comment.DateCreated</div>
-                                                        <div class="reply-edit">
-                                                            <div class="reply">
-                                                                <a class="comment-reply-link hover-flip-item-wrapper" href="#">
-                                                                    <span class="hover-flip-item">
-                                                                        <span data-text="Reply">Reply</span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="comment-text">
-                                                        <p class="b2">
-                                                            @Html.Raw(comment.Body)
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        @*<ul class="children">
-                                            <!-- Start Single Comment  -->
-                                            <li class="comment">
-                                                <div class="comment-body">
-                                                    <div class="single-comment">
-                                                        <div class="comment-img">
-                                                            <img src="assets/images/post-images/author/author-b3.png" alt="Author Images">
-                                                        </div>
-                                                        <div class="comment-inner">
-                                                            <h6 class="commenter">
-                                                                <a class="hover-flip-item-wrapper" href="#">
-                                                                    <span class="hover-flip-item">
-                                                                        <span data-text="Rahabi Khan">Rahabi Khan</span>
-                                                                    </span>
-                                                                </a>
-                                                            </h6>
-                                                            <div class="comment-meta">
-                                                                <div class="time-spent">
-                                                                    Nov 23, 2018 at 12:23 pm
-                                                                </div>
-                                                                <div class="reply-edit">
-                                                                    <div class="reply">
-                                                                        <a class="comment-reply-link hover-flip-item-wrapper" href="#">
-                                                                            <span class="hover-flip-item">
-                                                                                <span data-text="Reply">Reply</span>
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="comment-text">
-                                                                <p class="b2">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse lobortis cursus lacinia. Vestibulum vitae leo id diam pellentesque ornare.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <!-- End Single Comment  -->
-                                        </ul>*@
-                                    </li>
-                                } <!-- end comment -->
-                                <!-- End Single Comment  -->
-                            </ul>
-                        </div>
+                        <partial name="_Comments" />
                         <!-- End Comment Area  -->
                     </div>
                     <!-- End Comment Form Area  -->
