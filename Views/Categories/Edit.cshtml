@@ -1,12 +1,53 @@
 ﻿@model BlogMVC.Models.Category
 @using BlogMVC.Services.Interfaces
+@using BlogMVC.Enums
 @inject IImageService ImageService
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit a Category</h1>
+<div class="container mt-5">
+    <form asp-action="Edit" method="post" asp-controller="Categories" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <h1>Edit a Category</h1>
+        <hr />
+        <div class="row">
+            <div class="col-12 col-lg-12">
+                @*<div class="square-img-container">
+                    <img class="square-img" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.CategoryImage)" id="contactImage" alt="category picture"/>
+                </div>*@
+                <div class="form-group">
+                    <label asp-for="CategoryImage" class="control-label">Upload an Image for Category</label>
+                    <input asp-for="CategoryImage" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
+                           onchange="document.getElementById('catImage').src=window.URL.createObjectURL(this.files[0])" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary rounded-pill">Save changes</button>
+            </div>
+        </div>
+    </form>
+    <div class="mt-5">
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@*<h1>Edit a Category</h1>
 
 <hr />
 <div class="row">
@@ -17,10 +58,9 @@
             <input type="hidden" asp-for="ImageData" />
             <input type="hidden" asp-for="ImageType" />
 
-            @*TODO: add Image*@
             <div class="form-group">
                 <label asp-for="CategoryImage" class="control-label">Upload an Image for Category</label>
-                <img id="categoryImage" class="img-fluid" src="~/img/DefaultCategoryImage.png" />
+                <img id="categoryImage" class="img-fluid border rounded-3 m-2" style="max-height: 250px;" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.CategoryImage)" alt="category picture">
                 <input asp-for="CategoryImage" class="form-control" accept=".png,.jpg,.jpeg,.gif"
                        onchange="document.getElementById('categoryImage').src=window.URL.createObjectURL(this,files[0])" />
             </div>
@@ -44,7 +84,7 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

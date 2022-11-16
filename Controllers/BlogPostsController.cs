@@ -89,7 +89,7 @@ namespace BlogMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,CategoryId,Abstract,IsDeleted,IsPublished,BlogPostImage")] BlogPost blogPost, IEnumerable<int> selectedTags)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,CategoryId,Abstract,IsDeleted,IsPublished,BlogPostImage")] BlogPost blogPost, string stringTags)
         {
             ModelState.Remove("CreatorId");
 
@@ -123,7 +123,7 @@ namespace BlogMVC.Controllers
                 await _context.SaveChangesAsync();
 
                 // TODO: add tags selected by the end user
-                await _blogPostService.AddTagsToBlogPostsAsync(selectedTags, blogPost.Id);
+                await _blogPostService.AddTagsToBlogPostsAsync(stringTags, blogPost.Id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -166,7 +166,7 @@ namespace BlogMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CreatorId,Title,Content,DateCreated,Abstract,CategoryId,IsDeleted,IsPublished,ImageData,ImageType,BlogPostImage")] BlogPost blogPost, IEnumerable<int> selectedTags)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CreatorId,Title,Content,DateCreated,Abstract,CategoryId,IsDeleted,IsPublished,ImageData,ImageType,BlogPostImage")] BlogPost blogPost, string stringTags)
         {
             if (id != blogPost.Id)
             {
@@ -205,7 +205,7 @@ namespace BlogMVC.Controllers
                     await _blogPostService.RemoveAllBlogPostTagsAsync(blogPost.Id);
 
                     // TODO: add tags selected to the blog post
-                    await _blogPostService.AddTagsToBlogPostsAsync(selectedTags, blogPost.Id);
+                    await _blogPostService.AddTagsToBlogPostsAsync(stringTags, blogPost.Id);
 
                 }
                 catch (DbUpdateConcurrencyException)

@@ -143,6 +143,10 @@ namespace BlogMVC.Controllers
             {
                 try
                 {
+
+                    // set DateCreated
+                    comment.DateCreated = DateTime.SpecifyKind(comment.DateCreated, DateTimeKind.Utc);
+
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
                 }

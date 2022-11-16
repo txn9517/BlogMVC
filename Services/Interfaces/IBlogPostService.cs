@@ -26,6 +26,9 @@ namespace BlogMVC.Services.Interfaces
         // add tags to blog posts
         public Task AddTagsToBlogPostsAsync(IEnumerable<int> tagIds, int blogPostId);
 
+        // add tags to blog posts - Overloaded Method
+        public Task AddTagsToBlogPostsAsync(string tagNames, int blogPostId);
+
         // remove all tags
         public Task RemoveAllBlogPostTagsAsync(int blogPostId);
 

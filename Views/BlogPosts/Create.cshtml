@@ -2,18 +2,79 @@
 @using BlogMVC.Services.Interfaces
 @using BlogMVC.Enums
 @inject IImageService ImageService
+@inject IBlogPostService BlogPostService
 
 @{
     ViewData["Title"] = "Create";
+    var tags = (await BlogPostService.GetTagsAsync()).OrderBy(t => t.BlogPosts.Count);
 }
 
-<div class="post-single-wrapper axil-section-gap bg-color-white">
+<div class="container mt-5">
+    <form asp-action="Create" method="post" asp-controller="BlogPosts" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <h1>Create a Blog Post</h1>
+        <hr />
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Abstract" class="control-label"></label>
+                    <textarea asp-for="Abstract" class="form-control" rows="1"></textarea>
+                    <span asp-validation-for="Abstract" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label">Category</label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BlogPostImage" class="control-label">Upload an Image for your Post</label>
+                    <img id="blogPostImage" class="img-fluid border rounded-3 m-2" style="max-height: 250px;" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogPostImage)" alt="blog post picture">
+                    <input asp-for="BlogPostImage" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
+                           onchange="document.getElementById('blogPostImage').src = window.URL.createObjectURL(this.files[0])" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label"></label>
+                    <textarea asp-for="Content" class="form-control editor"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Tags"></label>
+                    <input class="form-control" type="text" id="tagInput" name="StringTags" autocomplete="off" />
+                    <div class="tagcloud axil-single-widget mt-2" style="display: none">
+                        @foreach (Tag tag in tags)
+                        {
+                            <a onclick="addTag(this)">@tag.Name</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group d-flex justify-content-end mt-3">
+            <div class="form-group form-check d-flex my-auto">
+                <label class="form-check-label my-auto me-4">
+                    <input class="form-check-input me-3" asp-for="IsPublished" />&nbsp; Publish?
+                </label>
+            </div>
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+    <div class="mt-5">
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@*<div class="post-single-wrapper axil-section-gap bg-color-white">
     <div class="container">
         <div class="row card shadow-lg">
             <div class="col-md-12">
                 <h1>Create a Blog Post</h1>
                 <hr />
-                @* Form goes here *@
                 <form asp-action="Create" method="post" asp-controller="BlogPosts" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -70,108 +131,89 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    @*<script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/super-build/ckeditor.js"></script>*@
     <script>
-        CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
-            toolbar: {
-                items: [
-                    'findAndReplace', 'selectAll', '|',
-                    'heading', '|',
-                    'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
-                    'bulletedList', 'numberedList', 'todoList', '|',
-                    'outdent', 'indent', '|',
-                    'undo', 'redo',
-                    '-',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                    'alignment', '|',
-                    'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
-                    'specialCharacters', 'horizontalLine', 'pageBreak', '|',
-                    'textPartLanguage', '|',
-                    'sourceEditing'
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                ]
-            },
-            fontFamily: {
-                options: [
-                    'default',
-                    'Arial, Helvetica, sans-serif',
-                    'Courier New, Courier, monospace',
-                    'Georgia, serif',
-                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                    'Tahoma, Geneva, sans-serif',
-                    'Times New Roman, Times, serif',
-                    'Trebuchet MS, Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ],
-                supportAllValues: true
-            },
-            fontSize: {
-                options: [10, 12, 14, 'default', 18, 20, 22],
-                supportAllValues: true
-            },
-            htmlSupport: {
-                allow: [
-                    {
-                        name: /.*/,
-                        attributes: true,
-                        classes: true,
-                        styles: true
-                    }
-                ]
-            },
-            htmlEmbed: {
-                showPreviews: true
-            },
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
+        ClassicEditor
+            .create(document.querySelector('.editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 
+    <script>
+        $(document).ready(function () {
+            // override the jQuery ":contains" selector to make it case insensitive
+            jQuery.expr[':'].contains = function (a, i, m) {
+                return $(a).text().toUpperCase()
+                    .indexOf(m[3].toUpperCase()) >= 0;
+            };
+
+            // show tagcloud on input focus
+            $('#tagInput').focus(function () {
+                $('.tagcloud').show(300);
+            });
+
+            // hides tagcloud
+            $('form *:not("#tagInput")').focus(function () {
+                if ($('.tagcloud').is(':visible')) {
+                    $('.tagcloud').hide(300);
                 }
-            },
-            removePlugins: [
-                'CKBox',
-                'CKFinder',
-                'EasyImage',
-                'RealTimeCollaborativeComments',
-                'RealTimeCollaborativeTrackChanges',
-                'RealTimeCollaborativeRevisionHistory',
-                'PresenceList',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader'
-                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                // from a local file system (file://) - load this site via HTTP server if you enable MathType
-            ]
+            });
+
+            // searches tag cloud
+            $('#tagInput').keyup(function () {
+                $('.disabledTag').each(function () {
+                    $(this).removeClass('disabledTag');
+                })
+                let inputTags = $(this).val().split(',');
+                let searchString = inputTags.pop().trim();
+
+                $('.tagcloud > a:not( :contains(' + searchString + ') )').hide();
+                $('.tagcloud > a:contains(' + searchString + ')').show();
+
+                // hide the tags we already have
+                inputTags.forEach(tag => {
+                    if (tag.trim() == '') return;
+                    let containingTag = $('.tagcloud > a:contains(' + tag.trim() + ')')
+                    if (containingTag.text().trim().toLowerCase() == tag.trim().toLowerCase()) containingTag.addClass('disabledTag');
+                });
+            });
         });
+        function addTag(elem) {
+            let input = document.getElementById('tagInput');
+
+            // do nothing if we've selected the tag already
+            if (elem.classList.contains('disabledTag')) {
+                input.focus();
+                return;
+            }
+
+            // get the name of the tag
+            let tagName = elem.textContent + ', ';
+
+            // get array of currently entered tags
+            let currentTags = input.value.split(',');
+
+            // remove partially typed tag
+            currentTags.pop();
+
+            // add the full name of the new tag
+            currentTags.push(tagName);
+
+            input.value = currentTags.reduce((inputString, currentString) => inputString + ", " + currentString.trim());
+            input.focus();
+
+            // reset the tag cloud
+            $('.tagcloud > a').show();
+
+            elem.classList.add('disabledTag');
+        }
     </script>
 
     }

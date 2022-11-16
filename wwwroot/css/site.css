@@ -243,3 +243,35 @@ figcaption {
 .dangerText {
     color: rgb(255, 0, 0);
 }
+
+.ck-editor__editable_inline {
+    min-height: 600px;
+}
+
+.form-check-input {
+    position: relative !important;
+    opacity: 1 !important;
+    width: initial !important;
+    height: 1rem !important;
+    margin: initial !important;
+}
+
+.tagcloud > .disabledTag {
+    background-color: lightgray;
+    color: gray;
+    font-weight: bold
+}
+
+.tagcloud a:hover {
+    color: white !important;
+}
+
+.tagcloud a {
+    color: black;
+}
+
+.tagcloud > .disabledTag:hover {
+    background-color: lightgray;
+    color: darkgray !important;
+    border-color: lightgray;
+}

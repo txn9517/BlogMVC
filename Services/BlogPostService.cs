@@ -169,6 +169,42 @@ namespace BlogMVC.Services
             }
         }
 
+        public async Task AddTagsToBlogPostsAsync(string tagNames, int blogPostId)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts.FindAsync(blogPostId);
+
+                // guard statement
+                if (blogPost == null) return;
+
+                // comma delimited list
+                foreach(string tagName in tagNames.Split(","))
+                {
+                    if (string.IsNullOrEmpty(tagName.Trim())) continue;
+
+                    Tag? tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name.Trim().ToLower() == tagName.Trim().ToLower());
+
+                    if (tag != null)
+                    {
+                        blogPost.Tags.Add(tag);
+                    } 
+                    else
+                    {
+                        Tag newTag = new Tag() { Name = tagName.Trim() };
+
+                        blogPost.Tags.Add(newTag);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
+            } catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task RemoveAllBlogPostTagsAsync(int blogPostId)
         {
             try

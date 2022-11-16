@@ -66,7 +66,7 @@ namespace BlogMVC.Controllers
         // GET: Categories/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new Category());
         }
 
         // POST: Categories/Create
@@ -74,7 +74,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,CategoryImage")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,ImageData,ImageType,CategoryImage")] Category category)
         {
             if (ModelState.IsValid)
             {
