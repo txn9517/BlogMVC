@@ -17,6 +17,14 @@
             <input type="hidden" asp-for="ImageData" />
             <input type="hidden" asp-for="ImageType" />
 
+            @*TODO: add Image*@
+            <div class="form-group">
+                <label asp-for="CategoryImage" class="control-label">Upload an Image for Category</label>
+                <img id="categoryImage" class="img-fluid" src="~/img/DefaultCategoryImage.png" />
+                <input asp-for="CategoryImage" class="form-control" accept=".png,.jpg,.jpeg,.gif"
+                       onchange="document.getElementById('categoryImage').src=window.URL.createObjectURL(this,files[0])" />
+            </div>
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -26,13 +34,6 @@
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            @*TODO: add Image*@
-            <div class="form-group">
-                <label asp-for="CategoryImage" class="control-label"></label>
-                <img id="categoryImage" class="img-fluid" src="~/img/DefaultCategoryImage.png" />
-                <input asp-for="CategoryImage" class="form-control" accept=".png,.jpg,.jpeg,.gif"
-                       onchange="document.getElementById('categoryImage'.src=window.URL.createObjectURL(this,files[0])" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary rounded-pill my-2 btnLink" />

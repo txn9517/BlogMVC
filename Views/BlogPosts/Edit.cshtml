@@ -17,6 +17,7 @@
                 <form asp-action="Edit" method="post" asp-controller="BlogPosts" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CreatorId" />
                     <input type="hidden" asp-for="DateCreated" />
                     <input type="hidden" asp-for="LastUpdated" />
                     <input type="hidden" asp-for="ImageData" />
@@ -26,10 +27,10 @@
                     @*TODO: add Image*@
                     <div class="col-12 col-lg-6">
                         <div class="form-group">
-                            <label asp-for="BlogPostImage" class="control-label">Upload an Image</label>
-                            <img id="blogPostImage" class="img-fluid" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogPostImage)" alt="blog post picture" />
+                            <label asp-for="BlogPostImage" class="control-label">Upload an Image for Blog Post</label>
+                            <img id="blogPostImage" class="img-fluid" src="~/img/DefaultBlogImage.png" alt="blog post picture" />
                             <input asp-for="BlogPostImage" class="form-control" accept=".png,.jpg,.jpeg,.gif"
-                                   onchange="document.getElementById('blogPostImage'.src=window.URL.createObjectURL(this,files[0])" />
+                                   onchange="document.getElementById('blogPostImage').src=window.URL.createObjectURL(this,files[0])" />
                         </div>
                     </div>
 

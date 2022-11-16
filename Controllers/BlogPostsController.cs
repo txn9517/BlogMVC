@@ -166,7 +166,7 @@ namespace BlogMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,DateCreated,LastUpdated,CategoryId,Slug,Abstract,IsDeleted,IsPublished,ImageData,ImageType,BlogPostImage")] BlogPost blogPost, IEnumerable<int> selectedTags)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CreatorId,Title,Content,DateCreated,Abstract,CategoryId,IsDeleted,IsPublished,ImageData,ImageType,BlogPostImage")] BlogPost blogPost, IEnumerable<int> selectedTags)
         {
             if (id != blogPost.Id)
             {
