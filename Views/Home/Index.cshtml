@@ -118,9 +118,10 @@
                 <div id="page-selector" class="my-5 py-5">
                     @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }),
                     new PagedListRenderOptions {
-                        ContainerDivClasses = new string[] { },
+                        ContainerDivClasses = new string[] { "axil-single-widget", "widget", "widget_social" },
                         UlElementClasses = new string[] { "social-icon", "justify-content-center" },
-                        LiElementClasses = new string[] { "fab", "fw-bold" }
+                        LiElementClasses = new string[] { "fab", "fw-bold" },
+                        FunctionToDisplayEachPageNumber = pageNum => ((pageNum - 1) * Model.PageSize + 1).ToString() + "-" + (((pageNum - 1) * Model.PageSize) + Model.PageSize).ToString(), MaximumPageNumbersToDisplay = 5
                     })
                 </div>
 
