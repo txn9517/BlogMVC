@@ -112,7 +112,7 @@
                 }
 
                 <!-- add page list -->
-                <div>
+                <div class="d-flex justify-content-end my-auto">
                     Page @(Model.PageCount < Model.PageNumber ? 1 : Model.PageNumber) of @Model.PageCount
                 </div>
                 <div id="page-selector" class="my-5 py-5">
@@ -120,7 +120,7 @@
                     new PagedListRenderOptions {
                         ContainerDivClasses = new string[] { },
                         UlElementClasses = new string[] { "social-icon", "justify-content-center" },
-                        LiElementClasses = new string[] { "fab", "fw-bold" },
+                        LiElementClasses = new string[] { "fab", "fw-bold" }
                     })
                 </div>
 

@@ -37,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-               <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.CategoryImage)" class="img-fluid" alt="category picture">
+               <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.CategoryImage)" class="img-fluid" style="max-width: 150px;" alt="category picture">
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

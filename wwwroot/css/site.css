@@ -168,6 +168,10 @@ button overrides
     margin: 0rem .3rem;
 }
 
+.bootstrapIcons {
+    font-size: 2rem;
+}
+
 figcaption {
     color: var(--tn-text-dark-color);
     font-size: .9rem;

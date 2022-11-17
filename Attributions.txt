@@ -1,0 +1,9 @@
+﻿DefaultBlogImg.png
+<a href="https://storyset.com/internet">Internet illustrations by Storyset</a>
+
+DefaultCategoryImg.png
+<a href="https://storyset.com/business">Business illustrations by Storyset</a>
+
+Img for Debugging blog entry
+debugging.png
+<a href="https://storyset.com/data">Data illustrations by Storyset</a>

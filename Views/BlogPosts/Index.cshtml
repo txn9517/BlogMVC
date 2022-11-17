@@ -12,7 +12,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-sm">
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -76,7 +76,7 @@
                 @Html.DisplayFor(modelItem => item.IsPublished)
             </td>*@
             <td>
-                <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.BlogPostImage)" class="img-fluid" alt="blog post picture">
+                <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.BlogPostImage)" class="img-fluid" style="max-height: 150px;" alt="blog post picture">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category!.Name)

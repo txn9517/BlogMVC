@@ -18,7 +18,7 @@
                 <div class="comment-body">
                     <div class="single-comment">
                         <div class="comment-img">
-                            <img src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.BlogUserImage)" class="authorCommentImg" alt="Author Images">
+                            <img src="@ImageService.ConvertByteArrayToFile(@Model.Creator?.ImageData!, @Model.Creator?.ImageType!, (int)DefaultImage.BlogUserImage)" class="img-fluid authorCommentImg" alt="author picture">
                         </div>
                         <div class="comment-inner">
                             <h6 class="commenter">

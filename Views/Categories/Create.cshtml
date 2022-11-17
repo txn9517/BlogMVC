@@ -14,10 +14,10 @@
         <h1>Create a Category</h1>
         <hr />
         <div class="row">
-            <div class="col-12 col-lg-12">
+            <div class="col-12 col-lg-12 d-flex justify-content-center">
                 <div class="form-group">
                     <label asp-for="CategoryImage" class="control-label">Upload an Image for Category</label>
-                    <img id="catImage" class="img-fluid border rounded-3 m-2" style="max-height: 250px;" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType, (int)DefaultImage.CategoryImage)" alt="category picture">
+                    <img id="catImage" class="img-fluid border rounded-3 m-2" style="max-height: 250px;" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType!, (int)DefaultImage.CategoryImage)" alt="category picture">
                     <input asp-for="CategoryImage" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
                            onchange="document.getElementById('catImage').src=window.URL.createObjectURL(this.files[0])" />
                 </div>
