@@ -104,6 +104,9 @@ footer {
     color: var(--tn-text-light-color);
 }
 
+.textLogin {
+    color: var(--tn-primary-color);
+}
 
 .copyright {
     font-size: 0.9rem;

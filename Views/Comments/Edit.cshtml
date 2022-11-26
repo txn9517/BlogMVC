@@ -4,7 +4,44 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<!-- Comment Edit -->
+
+<div class="container mt-5">
+    <form asp-action="Edit" method="post" asp-controller="Comments">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="BlogPostId" />
+        <input type="hidden" asp-for="AuthorId" />
+        <input type="hidden" asp-for="DateCreated" />
+        <input type="hidden" asp-for="LastUpdated" />
+
+        <h1>Edit a Comment</h1>
+        <hr />
+
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="UpdateReason" class="control-label"></label>
+                    <input asp-for="UpdateReason" class="form-control" />
+                    <span asp-validation-for="UpdateReason" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Body" class="control-label"></label>
+                    <input asp-for="Body" class="form-control" />
+                    <span asp-validation-for="Body" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-start">
+                <button type="submit" class="btn btn-primary rounded-pill">Save changes</button>
+            </div>
+        </div>
+    </form>
+    <div class="mt-2">
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@*<h1>Edit</h1>
 
 <h4>Comment</h4>
 <hr />
@@ -37,7 +74,7 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

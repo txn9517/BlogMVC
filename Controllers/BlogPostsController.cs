@@ -42,9 +42,47 @@ namespace BlogMVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BlogPosts.Include(b => b.Category);
+            //string creatorId = _userManager.GetUserId(User);
 
-            return View(await applicationDbContext.ToListAsync());
+            //List<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsAsync(creatorId)).ToList();
+
+            // call service to view all blogs
+            List<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsPubOrDelAsync()).ToList();
+
+            // if user is admin or mod, view all blogs published or deleted
+            if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+            {
+                return View(blogPosts);
+            }
+            // if user is a registered user or anonymous, view only published blogs
+            else
+            {
+                List<BlogPost> blogPostsPublished = (await _blogPostService.GetAllBlogPostsPubAsync()).ToList();
+
+                return View(blogPostsPublished);
+            }
+
+            //return View(blogPosts);
+        }
+
+        // GET: BlogPosts/DeletedPostsPub
+        [Authorize(Roles=("Administrator"))]
+        public async Task<IActionResult> DeletedPostsPub()
+        {
+            // call service to view deleted blogs
+            List<BlogPost> blogPosts = (await _blogPostService.GetDeletedBlogPostsPubAsync()).ToList();
+
+            return View(blogPosts);
+        }
+
+        // GET: BlogPosts/DeletedPostsUnpub
+        [Authorize(Roles=("Administrator"))]
+        public async Task<IActionResult> DeletedPostsUnpub()
+        {
+            // call service to view deleted blogs
+            List<BlogPost> blogPosts = (await _blogPostService.GetDeletedBlogPostsUnpubAsync()).ToList();
+
+            return View(blogPosts);
         }
 
         // GET: BlogPosts/Details/5
@@ -56,7 +94,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPosts
+            BlogPost? blogPost = await _context.BlogPosts
                                             .Include(b => b.Category)
                                             .Include(b => b.Comments)
                                                 .ThenInclude(c => c.Author)
@@ -72,15 +110,15 @@ namespace BlogMVC.Controllers
         }
 
         // GET: BlogPosts/Create
-        [Authorize(Roles = "Administrator,Moderator")]
+        [Authorize(Roles="Administrator,Moderator")]
         public async Task<IActionResult> Create()
         {
-            BlogPost model = new BlogPost();
+            BlogPost blogPost = new BlogPost();
 
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["BlogPostTags"] = new MultiSelectList(await _blogPostService.GetTagsAsync(), "Id", "Name");
 
-            return View(model);
+            return View(blogPost);
         }
 
         // POST: BlogPosts/Create
@@ -142,7 +180,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPosts
+            BlogPost? blogPost = await _context.BlogPosts
                                             .Include(b => b.Tags)
                                             .FirstOrDefaultAsync(b => b.Id == id);
 
@@ -235,9 +273,10 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPosts
+            BlogPost? blogPost = await _context.BlogPosts
                 .Include(b => b.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (blogPost == null)
             {
                 return NotFound();
@@ -256,7 +295,9 @@ namespace BlogMVC.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.BlogPosts'  is null.");
             }
-            var blogPost = await _context.BlogPosts.FindAsync(id);
+
+            BlogPost? blogPost = await _context.BlogPosts.FindAsync(id);
+
             if (blogPost != null)
             {
                 // set deleted blog post to true

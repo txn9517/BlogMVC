@@ -17,6 +17,7 @@ namespace BlogMVC.Models
         [StringLength(2000, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long", MinimumLength = 2)]
         public string? Description { get; set; }
 
+        [Display(Name = "Image")]
         public byte[]? ImageData { get; set; }
 
         public string? ImageType { get; set; }

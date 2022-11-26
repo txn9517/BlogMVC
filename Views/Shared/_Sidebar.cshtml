@@ -6,6 +6,8 @@
 @{
 }
 
+<!-- Sidebar Partial View -->
+
 <!-- Start Sidebar Area  -->
 <div class="sidebar-inner">
 
@@ -14,7 +16,7 @@
     <div class="axil-single-widget widget widget_categories mb--30">
         <h5 class="widget-title">Categories</h5>
         <ul>
-            @foreach (Category item in (await BlogPostService.GetCategoriesAsync()).Take(50))
+            @foreach (Category item in (await BlogPostService.GetCategoriesAsync()).Take(6))
             {
                 <li class="cat-item">
                     <a asp-controller="Categories" asp-action="Details" asp-route-id="@item.Id" class="inner">
@@ -38,7 +40,7 @@
 
         <!-- Start Post List  -->
         <div class="post-medium-block">
-            @foreach (BlogPost post in (await BlogPostService.GetMostPopularBlogPostsAsync()).Take(5))
+            @foreach (BlogPost post in (await BlogPostService.GetMostPopularBlogPostsAsync()).Take(6))
             {
                 <!-- Start Single Post  -->
                 <div class="content-block post-medium mb--20">
@@ -110,7 +112,7 @@
     <div class="axil-single-widget widget widget_categories mb--30">
         <h5 class="widget-title">Tags</h5>
         <ul>
-            @foreach (Tag item in (await BlogPostService.GetTagsAsync()).Take(100))
+            @foreach (Tag item in (await BlogPostService.GetTagsAsync()).Take(6))
             {
                 <li class="cat-item">
                     <a asp-controller="Tags" asp-action="Details" asp-route-id="@item.Id" class="inner">

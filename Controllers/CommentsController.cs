@@ -28,6 +28,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Comments
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Comments.Include(c => c.Author).Include(c => c.BlogPost);
@@ -36,6 +37,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Comments/Details/5
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -105,9 +107,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            // if user is NOT admin or mod
-            // if user wrote comment, let them edit
-            // return error
+            // if user is admin, mod, or comment author, see comment edit form
             if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || comment.AuthorId == _userManager.GetUserId(User))
             {
                 ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
@@ -126,7 +126,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator,Moderator")]
+        //[Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BlogPostId,AuthorId,DateCreated,LastUpdated,UpdateReason,Body")] Comment comment)
         {
             if (id != comment.Id)
@@ -134,6 +134,9 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
+            // if user is NOT admin or mod
+            // if user wrote comment, let them edit
+            // return error
             if (!User.IsInRole("Administrator") && User.IsInRole("Moderator") && comment.AuthorId == _userManager.GetUserId(User))
             {
                 return Unauthorized();
@@ -143,7 +146,6 @@ namespace BlogMVC.Controllers
             {
                 try
                 {
-
                     // set DateCreated
                     comment.DateCreated = DateTime.SpecifyKind(comment.DateCreated, DateTimeKind.Utc);
 

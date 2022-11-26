@@ -7,6 +7,8 @@
 @{
 }
 
+<!-- Comment Partial View -->
+
 <div class="axil-comment-area">
     <h4 class="title">@Model.Comments!.Count comments</h4>
     <ul class="comment-list">
@@ -29,26 +31,26 @@
                                 </a>
                             </h6>
                             <div class="comment-meta">
-                                <div class="time-spent">@comment.DateCreated</div>
-                                <div class="reply-edit">
-                                    <div class="reply">
-                                        <a class="comment-reply-link hover-flip-item-wrapper" href="#">
-                                            <span class="hover-flip-item">
-                                                <span data-text="Reply">Reply</span>
-                                            </span>
-                                        </a>
-                                        <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">
-                                            <span class="hover-flip-item">
-                                                <span data-text="Edit">Edit</span>
-                                            </span>
-                                        </a>
-                                        <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">
-                                            <span class="hover-flip-item">
-                                                <span data-text="Delete">Delete</span>
-                                            </span>
-                                        </a>
+                                <div class="time-spent">@comment.DateCreated.ToString("MMM dd, yyyy hh:mm tt")</div>
+                                    <div class="reply-edit">
+                                        <div class="reply">
+                                                <a class="comment-reply-link hover-flip-item-wrapper" href="#">
+                                                    <span class="hover-flip-item">
+                                                        <span data-text="Reply">Reply</span>
+                                                    </span>
+                                                </a>
+                                                <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">
+                                                    <span class="hover-flip-item">
+                                                        <span data-text="Edit">Edit</span>
+                                                    </span>
+                                                </a>
+                                                <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">
+                                                    <span class="hover-flip-item">
+                                                        <span data-text="Delete">Delete</span>
+                                                    </span>
+                                                </a>
+                                        </div>
                                     </div>
-                                </div>
                             </div>
                             <div class="comment-text">
                                 <p class="b2">

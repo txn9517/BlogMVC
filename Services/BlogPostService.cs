@@ -18,6 +18,97 @@ namespace BlogMVC.Services
         {
             _context = context;
         }
+        
+        public async Task<List<BlogPost>> GetAllBlogPostsPubOrDelAsync()
+        {
+            List<BlogPost> blogPosts = new List<BlogPost>();
+
+            try
+            {
+                // get all posts published or deleted
+                blogPosts = await _context.BlogPosts
+                                          .Include(b => b.Category)
+                                          .Include(b => b.Creator)
+                                          .Include(b => b.Comments)
+                                          .Include(b => b.Tags)
+                                          .OrderByDescending(b => b.DateCreated)
+                                          .ToListAsync();
+                return blogPosts;
+
+            } catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<BlogPost>> GetAllBlogPostsPubAsync()
+        {
+            List<BlogPost> blogPosts = new List<BlogPost>();
+
+            try
+            {
+                // get all posts published
+                blogPosts = await _context.BlogPosts
+                                          .Where(b => b.IsPublished == true && b.IsDeleted == false)
+                                          .OrderByDescending(b => b.DateCreated)
+                                          .ToListAsync();
+                return blogPosts;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<BlogPost>> GetDeletedBlogPostsPubAsync()
+        {
+            List<BlogPost> blogPosts = new List<BlogPost>();
+
+            try
+            {
+                // get deleted posts
+                blogPosts = await _context.BlogPosts
+                                    .Where(b => b.IsDeleted == true && b.IsPublished == true)
+                                    .Include(b => b.Category)
+                                    .Include(b => b.Creator)
+                                    .Include(b => b.Comments)
+                                    .Include(b => b.Tags)
+                                    .OrderByDescending(b => b.DateCreated)
+                                    .ToListAsync();
+
+                return blogPosts;
+
+            } catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<BlogPost>> GetDeletedBlogPostsUnpubAsync()
+        {
+            List<BlogPost> blogPosts = new List<BlogPost>();
+
+            try
+            {
+                // get deleted posts
+                blogPosts = await _context.BlogPosts
+                                    .Where(b => b.IsDeleted == true && b.IsPublished == false)
+                                    .Include(b => b.Category)
+                                    .Include(b => b.Creator)
+                                    .Include(b => b.Comments)
+                                    .Include(b => b.Tags)
+                                    .OrderByDescending(b => b.DateCreated)
+                                    .ToListAsync();
+
+                return blogPosts;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public async Task<bool> ValidateSlugAsync(string title, int blogPostId)
         {
@@ -266,22 +357,5 @@ namespace BlogMVC.Services
                 throw;
             }
         }
-
-        //public async Task<List<BlogPost>> GetBlogPostsCategory()
-        //{
-        //    try
-        //    {
-        //        List<BlogPost> blogPosts = await _context.BlogPosts
-        //                                                    .Where(b => b.IsDeleted == false && b.IsPublished == true)
-        //                                                    .Include(b => b.CategoryId)
-        //                                                    .ToListAsync();
-
-        //        return blogPosts;
-
-        //    } catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
     }
 }

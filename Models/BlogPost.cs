@@ -20,9 +20,11 @@ namespace BlogMVC.Models
         [Required]
         public string? Content { get; set; }
 
+        [Display(Name = "Date Created")]
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; }
 
+        [Display(Name = "Last Updated")]
         [DataType(DataType.DateTime)]
         public DateTime? LastUpdated { get; set; }
 
@@ -38,6 +40,7 @@ namespace BlogMVC.Models
         [DisplayName("Published")]
         public bool IsPublished { get; set; }
 
+        [Display(Name = "Image")]
         public byte[]? ImageData { get; set; }
 
         public string? ImageType { get; set; }

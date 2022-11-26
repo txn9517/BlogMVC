@@ -10,6 +10,7 @@ using BlogMVC.Models;
 using BlogMVC.Services.Interfaces;
 using BlogMVC.Services;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogMVC.Controllers
 {
@@ -28,12 +29,14 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Categories
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
               return View(await _context.Categories.ToListAsync());
         }
 
         // GET: Categories/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id, int? pageNum)
         {
             if (id == null)
@@ -64,6 +67,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Categories/Create
+        [Authorize(Roles = "Administrator,Moderator")]
         public IActionResult Create()
         {
             return View(new Category());
@@ -74,6 +78,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,CategoryImage")] Category category)
         {
             if (ModelState.IsValid)
@@ -95,6 +100,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Categories == null)
@@ -116,6 +122,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ImageData,ImageType,CategoryImage")] Category category)
         {
             if (id != category.Id)
@@ -156,6 +163,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Categories == null)
@@ -177,6 +185,7 @@ namespace BlogMVC.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Categories == null)

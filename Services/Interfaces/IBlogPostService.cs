@@ -5,6 +5,18 @@ namespace BlogMVC.Services.Interfaces
     // actions for working with blog posts
     public interface IBlogPostService
     {
+        // get all blog posts published or deleted
+        public Task<List<BlogPost>> GetAllBlogPostsPubOrDelAsync();
+
+        // get all blog posts published
+        public Task<List<BlogPost>> GetAllBlogPostsPubAsync();
+
+        // get deleted blog posts, published
+        public Task<List<BlogPost>> GetDeletedBlogPostsPubAsync();
+
+        // get deleted blog posts, unpublished
+        public Task<List<BlogPost>> GetDeletedBlogPostsUnpubAsync();
+
         // Slug functionality
         public Task<bool> ValidateSlugAsync(string title, int blogPostId);
 
@@ -34,5 +46,7 @@ namespace BlogMVC.Services.Interfaces
 
         // search blog posts
         public IEnumerable<BlogPost> SearchBlogPosts(string searchStr);
+
+        // get blog posts with tags
     }
 }

@@ -15,12 +15,15 @@ namespace BlogMVC.Models
         [Required]
         public string? AuthorId { get; set; }
 
+        [Display(Name = "Date Created")]
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; }
 
+        [Display(Name = "Last Updated")]
         [DataType(DataType.DateTime)]
         public DateTime? LastUpdated { get; set; }
 
+        [Display(Name = "Update Reason")]
         public string? UpdateReason { get; set; }
 
         [Required]
@@ -28,6 +31,7 @@ namespace BlogMVC.Models
         public string? Body { get; set; }
 
         // navigation properties
+        [Display(Name = "Blog Post")]
         public virtual BlogPost? BlogPost { get; set; }
 
         // add relationship to BlogUser

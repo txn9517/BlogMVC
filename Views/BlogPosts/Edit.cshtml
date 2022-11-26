@@ -9,6 +9,8 @@
     var tags = (await BlogPostService.GetTagsAsync()).OrderBy(t => t.BlogPosts.Count);
 }
 
+<!-- BlogPost Edit -->
+
 <div class="container mt-5">
     <form asp-action="Edit" method="post" asp-controller="BlogPosts" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -73,85 +75,10 @@
             <input type="submit" value="Save changes" class="btn btn-primary" />
         </div>
     </form>
-    <div class="mt-5">
-        <a asp-action="Index">Back to List</a>
+    <div class="mt-2">
+        <a asp-action="Index" class="btn btn-primary rounded-pill">Back to List</a>
     </div>
 </div>
-
-@*<div class="post-single-wrapper axil-section-gap bg-color-white">
-    <div class="container">
-        <div class="row card shadow-lg">
-            <div class="col-md-12">
-                <h1>Edit a Blog Post</h1>
-                <hr />
-                <form asp-action="Edit" method="post" asp-controller="BlogPosts" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="CreatorId" />
-                    <input type="hidden" asp-for="DateCreated" />
-                    <input type="hidden" asp-for="LastUpdated" />
-                    <input type="hidden" asp-for="ImageData" />
-                    <input type="hidden" asp-for="ImageType" />
-                    <input type="hidden" asp-for="Slug" />
-
-                    <div class="col-12 col-lg-6">
-                        <div class="form-group">
-                            <label asp-for="BlogPostImage" class="control-label">Upload an Image for your Post</label>
-                            <img class="img-fluid" style="max-height: 250px" src="@ImageService.ConvertByteArrayToFile(Model.ImageData!, Model.ImageType,(int)DefaultImage.BlogPostImage)" />
-                            <input asp-for="BlogPostImage" class="form-control" accept=".png,.jpg,.jpeg,.gif"
-                                   onchange="document.getElementById('blogPostImage').src=window.URL.createObjectURL(this,files[0])" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Content" class="control-label"></label>
-                        <textarea asp-for="Content" class="form-control editor"></textarea>
-                        <span asp-validation-for="Content" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CategoryId" class="control-label"></label>
-                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Tags" class="control-label"></label>
-                                     value="@string.Join(", ", Model.Tags.Select(t => t.Name))
-                        <select name="SelectedTags" class="form-control" asp-items="ViewBag.BlogPostTags" multiple></select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Abstract" class="control-label"></label>
-                        <input asp-for="Abstract" class="form-control" />
-                        <span asp-validation-for="Abstract" class="text-danger"></span>
-                    </div>
-                    <div class="form-group form-check">
-                        <input class="form-check-input" asp-for="IsDeleted" />
-                        <label class="form-check-label" asp-for="IsDeleted"></label>
-                        <span asp-validation-for="IsDeleted" class="text-danger"></span>
-                    </div>
-                    <div class="form-group form-check">
-                        <input class="form-check-input" asp-for="IsPublished" />
-                        <label class="form-check-label" asp-for="IsPublished"></label>
-                        <span asp-validation-for="IsPublished" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary rounded-pill my-2 btnLink" />
-                    </div>
-
-                    <div>
-                        <a asp-action="Index">Back to List</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>*@
-
-
 
 @section Scripts {
     @{
@@ -205,6 +132,7 @@
                 });
             });
         });
+
         function addTag(elem) {
             let input = document.getElementById('tagInput');
 

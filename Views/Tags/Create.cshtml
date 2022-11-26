@@ -4,7 +4,34 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<!-- Tag Creation -->
+
+<div class="container mt-5">
+    <form asp-action="Create" method="post" asp-controller="Tags">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h1>Create a Tag</h1>
+        <hr />
+
+        <div class="row">
+            <div class="col-12 col-lg-2">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-start">
+                <button type="submit" class="btn btn-primary rounded-pill">Create</button>
+            </div>
+        </div>
+    </form>
+    <div class="mt-2">
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@*<h1>Create</h1>
 
 <h4>Tag</h4>
 <hr />
@@ -26,7 +53,7 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

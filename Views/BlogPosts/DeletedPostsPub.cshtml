@@ -4,11 +4,10 @@
 @inject IImageService ImageService
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Published - Deleted Posts";
 }
 
-<!-- BlogPost Index -->
-@*<div class="container mt-5">*@
+<!-- BlogPost Deleted Posts -->
 
 <div class="main-wrapper">
 
@@ -31,38 +30,7 @@
     <div class="axil-post-list-area axil-section-gap bg-color-white">
         <div class="container">
             <div class="row">
-                @if (!User.Identity!.IsAuthenticated)
-                {
-                    <h1>Published Blog Posts</h1>
-                }
-                else if (User.Identity!.IsAuthenticated)
-                {
-                    if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                    {
-                        <h1>All Blog Posts</h1>
-
-                        <div class="row rows-col-1 row-cols-lg-3">
-                            <div class="col-12 col-lg-4 my-2">
-                                <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
-                            </div>
-
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <div class="col-12 col-lg-4 order-lg-last my-2">
-                                    <a asp-action="DeletedPostsPub" class="btn btn-primary rounded-pill">See Deleted Posts - Published</a>
-                                </div>
-
-                                <div class="col-12 col-lg-4 order-last">
-                                    <a asp-action="DeletedPostsUnpub" class="btn btn-primary rounded-pill">See Deleted Posts - Unpublished</a>
-                                </div>
-                            }
-                        </div>
-                    }
-                    else
-                    {
-                        <h1>Published Blog Posts</h1>
-                    }
-                }
+                <h1>Deleted Blog Posts, Published</h1>
                 <div class="col-lg-8 col-xl-8">
                     @foreach (BlogPost post in Model)
                     {
@@ -100,21 +68,17 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    
-                                </div>
-                                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                                {
-                                    <a asp-action="Edit" class="btn btn-primary rounded-pill" asp-route-id="@post.Id">Edit</a>
 
-                                    @if (User.IsInRole("Administrator"))
-                                    {
-                                        <a asp-action="Delete" class="btn btn-primary rounded-pill my-2" asp-route-id="@post.Id">Delete</a>
-                                    }
-                                }
+                                </div>
+                                <a asp-action="Edit" class="btn btn-primary rounded-pill my-2" asp-route-id="@post.Id">Edit</a>
                             </div>
                         </div>
                         <!-- End Post List  -->
                     }
+
+                    <div class="mt-2 text-end">
+                        <a asp-action="Index" class="btn btn-primary rounded-pill">Back to List</a>
+                    </div>
                 </div>
 
                 <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
@@ -131,39 +95,7 @@
 
 </div>
 
-@*
-    @if (!User.Identity!.IsAuthenticated)
-    {
-        <h1>Published Blog Posts</h1>
-    }
-    else if (User.Identity!.IsAuthenticated)
-    {
-        if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-        {
-            <h1>All Blog Posts</h1>
-
-            <div class="row rows-col-1 row-cols-lg-3">
-                <div class="col-12 col-lg-4 my-2">
-                     <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
-                </div>
-
-                @if (User.IsInRole("Administrator"))
-                {
-                    <div class="col-12 col-lg-4 order-lg-last my-2">
-                        <a asp-action="DeletedPostsPub" class="btn btn-primary rounded-pill">See Deleted Posts - Published</a>
-                    </div>
-
-                    <div class="col-12 col-lg-4 order-last">
-                        <a asp-action="DeletedPostsUnpub" class="btn btn-primary rounded-pill">See Deleted Posts - Unpublished</a>
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <h1>Published Blog Posts</h1>
-        }
-    }
+@*<h1>Deleted Blog Posts, Published</h1>
 
     <table class="table">
         <thead>
@@ -205,7 +137,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (BlogPost item in Model)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>
@@ -243,18 +175,13 @@
                     </td>
                     <td>
                         <a asp-action="Details" class="btn btn-primary rounded-pill my-2" asp-route-slug="@item.Slug">Details</a>
-                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                        {
-                            <a asp-action="Edit" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Edit</a>
-
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <a asp-action="Delete" class="btn btn-primary rounded-pill my-2" asp-route-id="@item.Id">Delete</a>
-                            }
-                        }
+                        <a asp-action="Edit" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Edit</a>
                     </td>
                 </tr>
             }
         </tbody>
-    </table>*@
-@*</div>*@
+    </table>
+
+    <div class="mt-2">
+        <a asp-action="Index" class="btn btn-primary rounded-pill">Back to List</a>
+    </div>*@

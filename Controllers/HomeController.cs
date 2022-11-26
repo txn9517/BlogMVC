@@ -28,7 +28,7 @@ namespace BlogMVC.Controllers
         public async Task<IActionResult> Index(int? pageNum)
         {
             // add page list functionality
-            int pageSize = 5;
+            int pageSize = 10;
             // if pageNum is null, set equal to 1
             int page = pageNum ?? 1;
 
@@ -43,7 +43,7 @@ namespace BlogMVC.Controllers
         public async Task<IActionResult> SearchIndex(string searchStr, int? pageNum)
         {
             // add page list functionality
-            int pageSize = 5;
+            int pageSize = 10;
             // if pageNum is null, set equal to 1
             int page = pageNum ?? 1;
 

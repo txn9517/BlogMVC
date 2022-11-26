@@ -7,6 +7,8 @@
     ViewData["Title"] = "Edit";
 }
 
+<!-- Category Edit -->
+
 <div class="container mt-5">
     <form asp-action="Edit" method="post" asp-controller="Categories" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -45,7 +47,7 @@
             </div>
         </div>
     </form>
-    <div class="mt-5">
+    <div class="mt-2">
         <a asp-action="Index">Back to List</a>
     </div>
 </div>

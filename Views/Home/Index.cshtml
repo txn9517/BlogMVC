@@ -22,7 +22,7 @@
                     <div class="media">
                         <div class="thumbnail">
                             <a href="#">
-                                <img src="~/img/me.jpg" class="authorHomeImg" alt="my image">
+                                <img src="@ImageService.ConvertByteArrayToFile(@Model.FirstOrDefault()?.Creator?.ImageData!, @Model.FirstOrDefault()?.Creator?.ImageType!, (int)DefaultImage.BlogUserImage)" class="authorHomeImg" alt="author image">
                             </a>
                         </div>
                         <div class="media-body">
@@ -56,7 +56,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-title">
-                    <h2 class="title mb--40">Things I Wrote</h2>
+                    <h2 class="title mb--40">Blog Posts</h2>
                 </div>
             </div>
             <div class="col-lg-8 col-xl-8">
@@ -98,6 +98,29 @@
                                             <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
                                             <li>@post.Comments!.Count comments</li>
                                         </ul>
+                                        @* user has to be logged in *@
+                                        @if (User.Identity!.IsAuthenticated) {
+                                            @* user has to be an admin or mod to see Edit *@
+                                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                            {
+                                                <div class="row my-2">
+                                                    <div class="col-12 col-lg-6">
+                                                        <a class="btn btn-primary rounded-pill" asp-action="Edit" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                                <span data-text="Edit">Edit</span>
+                                                        </a>
+                                                    </div>
+                                                    @* user has to be an admin to see Delete *@
+                                                    @if (User.IsInRole("Administrator"))
+                                                    {
+                                                        <div class="col-12 col-lg-6">
+                                                            <a class="btn btn-primary rounded-pill" asp-action="Delete" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                                    <span data-text="Delete">Delete</span>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        }
                                     </div>
                                 </div>
                                 <ul class="social-share-transparent justify-content-end">
@@ -120,8 +143,7 @@
                     new PagedListRenderOptions {
                         ContainerDivClasses = new string[] { "axil-single-widget", "widget", "widget_social" },
                         UlElementClasses = new string[] { "social-icon", "justify-content-center" },
-                        LiElementClasses = new string[] { "fab", "fw-bold" },
-                        FunctionToDisplayEachPageNumber = pageNum => ((pageNum - 1) * Model.PageSize + 1).ToString() + "-" + (((pageNum - 1) * Model.PageSize) + Model.PageSize).ToString(), MaximumPageNumbersToDisplay = 5
+                        LiElementClasses = new string[] { "fab", "fw-bold" }
                     })
                 </div>
 
