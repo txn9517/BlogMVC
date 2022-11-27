@@ -158,18 +158,16 @@
                                 <div class="content-block">
                                     <!-- Start Post Content  -->
                                     <div class="post-content">
-                                        @*<div class="post-cat">
-                                        <div class="post-cat-list">
-                                        <a class="hover-flip-item-wrapper" href="#">
-                                        <span class="hover-flip-item">
-                                        <span data-text="FEATURED POST">FEATURED POST</span>
-                                        </span>
-                                        </a>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-9">
+                                                <h1 class="title">
+                                                    @Model.Title
+                                                </h1>
+                                            </div>
+                                            <div class="col-12 col-lg-3 text-end">
+                                                <a asp-action="Index" class="btn btn-lg btn-primary rounded-pill">Back to List</a>
+                                            </div>
                                         </div>
-                                        </div>*@
-                                        <h1 class="title">
-                                            @Model.Title
-                                        </h1>
                                         <!-- Post Meta  -->
                                         <div class="post-meta-wrapper">
                                             <div class="post-meta">
@@ -212,15 +210,11 @@
 
                     <figure class="wp-block-image">
                         <img src="@ImageService.ConvertByteArrayToFile(@Model.ImageData!, @Model.ImageType!, (int)DefaultImage.BlogPostImage)" class="img-fluid" alt="post image">
-                        <figcaption>
-                            TEST
-                        </figcaption>
                     </figure>
 
                     @Html.Raw(Model.Content)
 
                     <!-- display each tag -->
-                    <!-- check this -->
                     <div class="tagcloud mt-3">
                         @foreach (Tag tag in Model.Tags)
                         {
@@ -272,6 +266,7 @@
                         </div>
                     </div>
                     <!-- End Author  -->
+
                     <!-- Start Comment Form Area  -->
                     <div class="axil-comment-area">
                         <!-- if user is not logged in -->
@@ -293,45 +288,11 @@
                                 <form asp-action="Create" method="post" asp-controller="Comments">
                                     <input type="hidden" asp-for="Id" name="BlogPostId" />
                                     <input type="hidden" asp-for="Slug" />
-                                    <p class="comment-notes">
-                                        <span id="email-notes">
-                                            Your email address will not be
-                                            published.
-                                        </span> Required fields are marked <span class="required">*</span>
-                                    </p>
                                     <div class="row row--10">
-                                        <div class="col-lg-4 col-md-4 col-12">
-                                            <div class="form-group">
-                                                <label for="name">Your Name</label>
-                                                <input id="name" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-12">
-                                            <div class="form-group">
-                                                <label for="email">Your Email</label>
-                                                <input id="email" type="email">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-12">
-                                            <div class="form-group">
-                                                <label for="website">Your Website</label>
-                                                <input id="website" type="text">
-                                            </div>
-                                        </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="message" class="control-label">Leave a Reply</label>
                                                 <textarea id="message" name="Body" class="form-control editor"></textarea>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <p class="comment-form-cookies-consent">
-                                                <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
-                                                <label for="wp-comment-cookies-consent">
-                                                    Save my name, email, and
-                                                    website in this browser for the next time I comment.
-                                                </label>
-                                            </p>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="form-group cerchio">

@@ -19,28 +19,6 @@ namespace BlogMVC.Services
             _context = context;
         }
         
-        public async Task<List<BlogPost>> GetAllBlogPostsPubOrDelAsync()
-        {
-            List<BlogPost> blogPosts = new List<BlogPost>();
-
-            try
-            {
-                // get all posts published or deleted
-                blogPosts = await _context.BlogPosts
-                                          .Include(b => b.Category)
-                                          .Include(b => b.Creator)
-                                          .Include(b => b.Comments)
-                                          .Include(b => b.Tags)
-                                          .OrderByDescending(b => b.DateCreated)
-                                          .ToListAsync();
-                return blogPosts;
-
-            } catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public async Task<List<BlogPost>> GetAllBlogPostsPubAsync()
         {
             List<BlogPost> blogPosts = new List<BlogPost>();
@@ -50,6 +28,34 @@ namespace BlogMVC.Services
                 // get all posts published
                 blogPosts = await _context.BlogPosts
                                           .Where(b => b.IsPublished == true && b.IsDeleted == false)
+                                          .Include(b => b.Creator)
+                                          .Include(b => b.Category)
+                                          .Include(b => b.Comments)
+                                          .Include(b => b.Tags)
+                                          .OrderByDescending(b => b.DateCreated)
+                                          .ToListAsync();
+                return blogPosts;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<BlogPost>> GetAllBlogPostsUnpubAsync()
+        {
+            List<BlogPost> blogPosts = new List<BlogPost>();
+
+            try
+            {
+                // get all posts unpublished
+                blogPosts = await _context.BlogPosts
+                                          .Where(b => b.IsPublished == false && b.IsDeleted == false)
+                                          .Include(b => b.Category)
+                                          .Include(b => b.Creator)
+                                          .Include(b => b.Comments)
+                                          .Include(b => b.Tags)
                                           .OrderByDescending(b => b.DateCreated)
                                           .ToListAsync();
                 return blogPosts;
@@ -105,6 +111,59 @@ namespace BlogMVC.Services
 
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<BlogPost> GetBlogPostDetails(string? slug)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts
+                                            .Include(b => b.Category)
+                                            .Include(b => b.Comments)
+                                                .ThenInclude(c => c.Author)
+                                            .Include(b => b.Tags)
+                                            .FirstOrDefaultAsync(m => m.Slug == slug);
+                return blogPost;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<BlogPost> GetBlogPostEditDetails(int? id)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts
+                                            .Include(b => b.Tags)
+                                            .FirstOrDefaultAsync(b => b.Id == id);
+
+                return blogPost;
+
+            } catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<BlogPost> GetBlogPostDeleteDetails(int? id)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts
+                                                    .Include(b => b.Creator)
+                                                    .Include(b => b.Category)
+                                                    .Include(b => b.Comments)
+                                                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                return blogPost;
+
+            } catch (Exception)
             {
                 throw;
             }

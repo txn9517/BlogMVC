@@ -31,36 +31,33 @@
     <div class="axil-post-list-area axil-section-gap bg-color-white">
         <div class="container">
             <div class="row">
-                @if (!User.Identity!.IsAuthenticated)
+                <h1>Published Blog Posts</h1>
+                @if (User.Identity!.IsAuthenticated) 
                 {
-                    <h1>Published Blog Posts</h1>
-                }
-                else if (User.Identity!.IsAuthenticated)
-                {
-                    if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                    @* user is logged in and is an admin or mod to create and publish unpublished posts *@
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
                     {
-                        <h1>All Blog Posts</h1>
-
-                        <div class="row rows-col-1 row-cols-lg-3">
-                            <div class="col-12 col-lg-4 my-2">
+                        <div class="row rows-col-1 row-cols-lg-3 mb-5">
+                            <div class="col-12 col-lg-3">
                                 <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
                             </div>
 
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <div class="col-12 col-lg-4 order-lg-last my-2">
-                                    <a asp-action="DeletedPostsPub" class="btn btn-primary rounded-pill">See Deleted Posts - Published</a>
-                                </div>
+                            <div class="col-12 col-lg-3">
+                                <a asp-action="PostsUnpub" class="btn btn-primary rounded-pill">See Posts - Unpublished</a>
+                            </div>
+                        
+                        @* only admin can see deleted posts *@
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <div class="col-12 col-lg-3 order-lg-last my-2">
+                                <a asp-action="DeletedPostsPub" class="btn btn-primary rounded-pill">See Deleted Posts - Published</a>
+                            </div>
 
-                                <div class="col-12 col-lg-4 order-last">
-                                    <a asp-action="DeletedPostsUnpub" class="btn btn-primary rounded-pill">See Deleted Posts - Unpublished</a>
-                                </div>
-                            }
+                            <div class="col-12 col-lg-3 order-last">
+                                <a asp-action="DeletedPostsUnpub" class="btn btn-primary rounded-pill">See Deleted Posts - Unpublished</a>
+                            </div>
+                        }
                         </div>
-                    }
-                    else
-                    {
-                        <h1>Published Blog Posts</h1>
                     }
                 }
                 <div class="col-lg-8 col-xl-8">
@@ -104,7 +101,7 @@
                                 </div>
                                 @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
                                 {
-                                    <a asp-action="Edit" class="btn btn-primary rounded-pill" asp-route-id="@post.Id">Edit</a>
+                                    <a asp-action="Edit" class="btn btn-primary rounded-pill my-2" asp-route-id="@post.Id">Edit</a>
 
                                     @if (User.IsInRole("Administrator"))
                                     {

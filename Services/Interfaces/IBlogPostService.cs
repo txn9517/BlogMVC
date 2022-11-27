@@ -5,17 +5,26 @@ namespace BlogMVC.Services.Interfaces
     // actions for working with blog posts
     public interface IBlogPostService
     {
-        // get all blog posts published or deleted
-        public Task<List<BlogPost>> GetAllBlogPostsPubOrDelAsync();
-
-        // get all blog posts published
+        // get all blog posts, published
         public Task<List<BlogPost>> GetAllBlogPostsPubAsync();
+
+        // get all blog posts, unpublished
+        public Task<List<BlogPost>> GetAllBlogPostsUnpubAsync();
 
         // get deleted blog posts, published
         public Task<List<BlogPost>> GetDeletedBlogPostsPubAsync();
 
         // get deleted blog posts, unpublished
         public Task<List<BlogPost>> GetDeletedBlogPostsUnpubAsync();
+
+        // get blog post details
+        public Task<BlogPost> GetBlogPostDetails(string? slug);
+
+        // get blog post edit
+        public Task<BlogPost> GetBlogPostEditDetails(int? id);
+
+        // get blog post delete
+        public Task<BlogPost> GetBlogPostDeleteDetails(int? id);
 
         // Slug functionality
         public Task<bool> ValidateSlugAsync(string title, int blogPostId);

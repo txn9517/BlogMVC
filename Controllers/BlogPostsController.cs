@@ -42,27 +42,18 @@ namespace BlogMVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            //string creatorId = _userManager.GetUserId(User);
+            List<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsPubAsync()).ToList();
 
-            //List<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsAsync(creatorId)).ToList();
+            return View(blogPosts);
+        }
 
-            // call service to view all blogs
-            List<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsPubOrDelAsync()).ToList();
+        // GET: BlogPosts/PostsUnpub
+        [Authorize(Roles = "Administrator,Moderator")]
+        public async Task<IActionResult> PostsUnpub()
+        {
+            List<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsUnpubAsync()).ToList();
 
-            // if user is admin or mod, view all blogs published or deleted
-            if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-            {
-                return View(blogPosts);
-            }
-            // if user is a registered user or anonymous, view only published blogs
-            else
-            {
-                List<BlogPost> blogPostsPublished = (await _blogPostService.GetAllBlogPostsPubAsync()).ToList();
-
-                return View(blogPostsPublished);
-            }
-
-            //return View(blogPosts);
+            return View(blogPosts);
         }
 
         // GET: BlogPosts/DeletedPostsPub
@@ -94,12 +85,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            BlogPost? blogPost = await _context.BlogPosts
-                                            .Include(b => b.Category)
-                                            .Include(b => b.Comments)
-                                                .ThenInclude(c => c.Author)
-                                            .Include(b => b.Tags)
-                                            .FirstOrDefaultAsync(m => m.Slug == slug);
+            BlogPost? blogPost = await _blogPostService.GetBlogPostDetails(slug);
 
             if (blogPost == null)
             {
@@ -180,9 +166,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            BlogPost? blogPost = await _context.BlogPosts
-                                            .Include(b => b.Tags)
-                                            .FirstOrDefaultAsync(b => b.Id == id);
+            BlogPost? blogPost = await _blogPostService.GetBlogPostEditDetails(id);
 
             if (blogPost == null)
             {
@@ -273,9 +257,11 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            BlogPost? blogPost = await _context.BlogPosts
-                .Include(b => b.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //BlogPost? blogPost = await _context.BlogPosts
+            //    .Include(b => b.Category)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            BlogPost? blogPost = await _blogPostService.GetBlogPostDeleteDetails(id);
 
             if (blogPost == null)
             {

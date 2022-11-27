@@ -137,7 +137,7 @@ namespace BlogMVC.Controllers
             // if user is NOT admin or mod
             // if user wrote comment, let them edit
             // return error
-            if (!User.IsInRole("Administrator") && User.IsInRole("Moderator") && comment.AuthorId == _userManager.GetUserId(User))
+            if (!(User.IsInRole("Administrator")) && !(User.IsInRole("Moderator")) && !(comment.AuthorId == _userManager.GetUserId(User)))
             {
                 return Unauthorized();
             }
@@ -163,7 +163,7 @@ namespace BlogMVC.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "BlogPosts");
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);

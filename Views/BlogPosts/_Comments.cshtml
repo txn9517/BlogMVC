@@ -20,7 +20,7 @@
                 <div class="comment-body">
                     <div class="single-comment">
                         <div class="comment-img">
-                            <img src="@ImageService.ConvertByteArrayToFile(@Model.Creator?.ImageData!, @Model.Creator?.ImageType!, (int)DefaultImage.BlogUserImage)" class="img-fluid authorCommentImg" alt="author picture">
+                            <img src="@ImageService.ConvertByteArrayToFile(comment.Author?.ImageData!, comment.Author?.ImageType!, (int)DefaultImage.BlogUserImage)" class="img-fluid authorCommentImg" alt="author picture">
                         </div>
                         <div class="comment-inner">
                             <h6 class="commenter">
@@ -34,11 +34,6 @@
                                 <div class="time-spent">@comment.DateCreated.ToString("MMM dd, yyyy hh:mm tt")</div>
                                     <div class="reply-edit">
                                         <div class="reply">
-                                                <a class="comment-reply-link hover-flip-item-wrapper" href="#">
-                                                    <span class="hover-flip-item">
-                                                        <span data-text="Reply">Reply</span>
-                                                    </span>
-                                                </a>
                                                 <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">
                                                     <span class="hover-flip-item">
                                                         <span data-text="Edit">Edit</span>
