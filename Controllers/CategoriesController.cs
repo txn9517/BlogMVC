@@ -45,13 +45,14 @@ namespace BlogMVC.Controllers
             }
 
             // add page list functionality
-            int pageSize = 5;
+            int pageSize = 10;
             // if pageNum is null, set equal to 1
             int page = pageNum ?? 1;
 
             // get the blog posts for specific category
             IPagedList<BlogPost> blogPosts = _context.BlogPosts
                                                     .Where(b => b.CategoryId == id && b.IsDeleted == false && b.IsPublished == true)
+                                                    .Include(b => b.Creator)
                                                     .Include(b => b.Comments)
                                                     .Include(b => b.Category)
                                                     .Include(b => b.Tags)
@@ -108,7 +109,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            Category? category = await _context.Categories.FindAsync(id);
 
             if (category == null)
             {
@@ -171,7 +172,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            Category? category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (category == null)
@@ -193,7 +194,7 @@ namespace BlogMVC.Controllers
                 return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            Category? category = await _context.Categories.FindAsync(id);
 
             if (category != null)
             {

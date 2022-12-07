@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<BlogMVC.Models.Tag>
+@using BlogMVC.Services.Interfaces
+@inject IBlogPostService BlogPostService
 
 @{
     ViewData["Title"] = "Index";
@@ -7,34 +9,40 @@
 <!-- Tag Index -->
 
 <div class="container mt-5">
-    <h1>Your Tags</h1>
+    <div class="axil-single-widget widget widget_categories mb--30">
+        <h1>Tags</h1>
+        @* user is logged in and is an admin or mod to create tags *@
+        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+        {
+            <div class="row mb-3">
+                <div class="col-12 col-lg-3">
+                    <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
+                </div>
+            </div>
+        }
+        <ul>
+            @foreach (Tag item in (await BlogPostService.GetTagsAsync()))
+            {
+                <li class="cat-item">
+                    <a asp-controller="Tags" asp-action="Details" asp-route-id="@item.Id" class="inner">
+                        <div class="content">
+                            <h5 class="title">@item.Name</h5>
+                        </div>
+                    </a>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
+                    @* user has to be an admin or mod to edit tags *@
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                    {
+                        <a asp-action="Edit" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Edit</a>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>
+                        @* user has to be an admin to delete tags *@
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a asp-action="Delete" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Delete</a>
+                        }
+                    }
+                </li>
+            }
+        </ul>
+    </div>
 </div>

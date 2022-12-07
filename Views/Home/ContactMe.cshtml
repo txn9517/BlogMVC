@@ -1,0 +1,38 @@
+﻿@model BlogMVC.Models.EmailData
+
+@{
+    ViewData["Title"] = "Contact Me";
+}
+
+<div class="container mt-5">
+
+<div class="card">
+    <form asp-action="ContactMe" asp-controller="Home" method="post" class="row">
+        <div class="card-header">
+            <h3 class="heroTitle fs-4 mt-2">Contact Me</h3>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-1">
+                <div class="col">
+                    <label>Your Email:</label>
+                    <label>@Model.EmailAddress</label>
+                    <input asp-for="EmailAddress" type="hidden" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 col-md-4 my-2">
+                <label>Subject:</label>
+                <input asp-for="Subject" />
+            </div>
+            <div class="col-12">
+                <label for="contact-message">Your Message:</label>
+                <textarea asp-for="Message" rows=10 required></textarea>
+            </div>
+            <div class="card-footer d-flex justify-content-between p-3">
+                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary rounded-pill btnLink">Back</a>
+                <button type="submit" class="btn btn-primary rounded-pill btnLink">Send</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</div>

@@ -25,57 +25,32 @@
                     <input asp-for="UpdateReason" class="form-control" />
                     <span asp-validation-for="UpdateReason" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="col-12 col-lg-6">
                 <div class="form-group">
                     <label asp-for="Body" class="control-label"></label>
-                    <input asp-for="Body" class="form-control" />
+                    <textarea asp-for="Body" class="form-control editor"></textarea>
                     <span asp-validation-for="Body" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group d-flex justify-content-start">
+            <div class="form-group d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary rounded-pill">Save changes</button>
             </div>
         </div>
     </form>
     <div class="mt-2">
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-primary rounded-pill">Back to List</a>
     </div>
 </div>
-
-@*<h1>Edit</h1>
-
-<h4>Comment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" method="post" asp-controller="Comments">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="BlogPostId" />
-            <input type="hidden" asp-for="AuthorId" />
-            <input type="hidden" asp-for="DateCreated" />
-            <input type="hidden" asp-for="LastUpdated" />
-
-            <div class="form-group">
-                <label asp-for="UpdateReason" class="control-label"></label>
-                <input asp-for="UpdateReason" class="form-control" />
-                <span asp-validation-for="UpdateReason" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Body" class="control-label"></label>
-                <input asp-for="Body" class="form-control" />
-                <span asp-validation-for="Body" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('.editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 }

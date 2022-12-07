@@ -32,19 +32,17 @@
         <div class="container">
             <div class="row">
                 <h1>Published Blog Posts</h1>
-                @if (User.Identity!.IsAuthenticated) 
+                @* user is logged in and is an admin or mod to create and publish unpublished posts *@
+                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
                 {
-                    @* user is logged in and is an admin or mod to create and publish unpublished posts *@
-                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
-                    {
-                        <div class="row rows-col-1 row-cols-lg-3 mb-5">
-                            <div class="col-12 col-lg-3">
-                                <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
-                            </div>
+                    <div class="row rows-col-1 row-cols-lg-3 mb-5">
+                        <div class="col-12 col-lg-3">
+                            <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
+                        </div>
 
-                            <div class="col-12 col-lg-3">
-                                <a asp-action="PostsUnpub" class="btn btn-primary rounded-pill">See Posts - Unpublished</a>
-                            </div>
+                        <div class="col-12 col-lg-3">
+                            <a asp-action="PostsUnpub" class="btn btn-primary rounded-pill">See Posts - Unpublished</a>
+                        </div>
                         
                         @* only admin can see deleted posts *@
                         @if (User.IsInRole("Administrator"))
@@ -57,8 +55,7 @@
                                 <a asp-action="DeletedPostsUnpub" class="btn btn-primary rounded-pill">See Deleted Posts - Unpublished</a>
                             </div>
                         }
-                        </div>
-                    }
+                    </div>
                 }
                 <div class="col-lg-8 col-xl-8">
                     @foreach (BlogPost post in Model)
@@ -127,131 +124,3 @@
     <!-- End Back To Top  -->
 
 </div>
-
-@*
-    @if (!User.Identity!.IsAuthenticated)
-    {
-        <h1>Published Blog Posts</h1>
-    }
-    else if (User.Identity!.IsAuthenticated)
-    {
-        if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-        {
-            <h1>All Blog Posts</h1>
-
-            <div class="row rows-col-1 row-cols-lg-3">
-                <div class="col-12 col-lg-4 my-2">
-                     <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
-                </div>
-
-                @if (User.IsInRole("Administrator"))
-                {
-                    <div class="col-12 col-lg-4 order-lg-last my-2">
-                        <a asp-action="DeletedPostsPub" class="btn btn-primary rounded-pill">See Deleted Posts - Published</a>
-                    </div>
-
-                    <div class="col-12 col-lg-4 order-last">
-                        <a asp-action="DeletedPostsUnpub" class="btn btn-primary rounded-pill">See Deleted Posts - Unpublished</a>
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <h1>Published Blog Posts</h1>
-        }
-    }
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Creator)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Content)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateCreated)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastUpdated)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Slug)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Abstract)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageData)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Category)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Tags)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (BlogPost item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Creator!.FullName)
-                    </td>
-                    <td>
-                        @Html.Raw(item.Content)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateCreated)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastUpdated)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Abstract)
-                    </td>
-                    <td>
-                        <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.BlogPostImage)" class="img-fluid" style="max-height: 175px;" alt="blog post picture">
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category!.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Tags)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Comments!.Count)
-                    </td>
-                    <td>
-                        <a asp-action="Details" class="btn btn-primary rounded-pill my-2" asp-route-slug="@item.Slug">Details</a>
-                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                        {
-                            <a asp-action="Edit" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Edit</a>
-
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <a asp-action="Delete" class="btn btn-primary rounded-pill my-2" asp-route-id="@item.Id">Delete</a>
-                            }
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
-@*</div>*@

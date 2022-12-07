@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogMVC.Data;
 using BlogMVC.Models;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogMVC.Controllers
 {
@@ -21,12 +22,14 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Tags
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
               return View(await _context.Tags.ToListAsync());
         }
 
         // GET: Tags/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id, int? pageNum)
         {
             if (id == null)
@@ -35,7 +38,7 @@ namespace BlogMVC.Controllers
             }
 
             // add page list functionality
-            int pageSize = 5;
+            int pageSize = 10;
             // if pageNum is null, set equal to 1
             int page = pageNum ?? 1;
 
@@ -43,9 +46,8 @@ namespace BlogMVC.Controllers
             // TODO: check this
             IPagedList<BlogPost> blogPosts = _context.BlogPosts
                                                     .Where(b => b.IsDeleted == false && b.IsPublished == true)
-                                                    .Include(b => b.Category)
-                                                    .Include(b => b.Comments)
                                                     .Include(b => b.Tags)
+                                                    .Include(b => b.Category)
                                                     .OrderByDescending(b => b.DateCreated)
                                                     .ToPagedList(page, pageSize);
 
@@ -58,6 +60,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Tags/Create
+        [Authorize(Roles = "Administrator,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -68,6 +71,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Create([Bind("Id,Name")] Tag tag)
         {
             if (ModelState.IsValid)
@@ -80,6 +84,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Tags/Edit/5
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Tags == null)
@@ -87,7 +92,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var tag = await _context.Tags.FindAsync(id);
+            Tag? tag = await _context.Tags.FindAsync(id);
 
             if (tag == null)
             {
@@ -101,6 +106,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Tag tag)
         {
             if (id != tag.Id)
@@ -132,6 +138,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: Tags/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Tags == null)
@@ -139,7 +146,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var tag = await _context.Tags
+            Tag? tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (tag == null)
@@ -153,13 +160,16 @@ namespace BlogMVC.Controllers
         // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Tags == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Tags'  is null.");
             }
-            var tag = await _context.Tags.FindAsync(id);
+
+            Tag? tag = await _context.Tags.FindAsync(id);
+
             if (tag != null)
             {
                 _context.Tags.Remove(tag);
