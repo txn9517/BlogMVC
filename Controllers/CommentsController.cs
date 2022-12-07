@@ -31,9 +31,12 @@ namespace BlogMVC.Controllers
         [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.Author).Include(c => c.BlogPost);
+            List<Comment> comments = await _context.Comments
+                                                    .Include(c => c.Author)
+                                                    .Include(c => c.BlogPost)
+                                                    .ToListAsync();
 
-            return View(await applicationDbContext.ToListAsync());
+            return View(comments);
         }
 
         // GET: Comments/Details/5
@@ -45,7 +48,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
+            Comment? comment = await _context.Comments
                 .Include(c => c.Author)
                 .Include(c => c.BlogPost)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -83,6 +86,9 @@ namespace BlogMVC.Controllers
                 // DateCreated
                 comment.DateCreated = DateTime.UtcNow;
 
+                // LastUpdated
+                comment.LastUpdated = DateTime.UtcNow;
+
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "BlogPosts", new { slug });
@@ -100,7 +106,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments.FindAsync(id);
+            Comment? comment = await _context.Comments.FindAsync(id);
 
             if (comment == null)
             {
@@ -126,7 +132,6 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BlogPostId,AuthorId,DateCreated,LastUpdated,UpdateReason,Body")] Comment comment)
         {
             if (id != comment.Id)
@@ -148,6 +153,9 @@ namespace BlogMVC.Controllers
                 {
                     // set DateCreated
                     comment.DateCreated = DateTime.SpecifyKind(comment.DateCreated, DateTimeKind.Utc);
+
+                    // check this
+                    comment.LastUpdated = DateTime.SpecifyKind(comment.LastUpdated!.Value, DateTimeKind.Utc);
 
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
@@ -179,7 +187,7 @@ namespace BlogMVC.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
+            Comment? comment = await _context.Comments
                 .Include(c => c.Author)
                 .Include(c => c.BlogPost)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -201,7 +209,9 @@ namespace BlogMVC.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Comments'  is null.");
             }
-            var comment = await _context.Comments.FindAsync(id);
+
+            Comment? comment = await _context.Comments.FindAsync(id);
+
             if (comment != null)
             {
                 _context.Comments.Remove(comment);

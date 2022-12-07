@@ -39,11 +39,15 @@
                                                         <span data-text="Edit">Edit</span>
                                                     </span>
                                                 </a>
-                                                <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">
-                                                    <span class="hover-flip-item">
-                                                        <span data-text="Delete">Delete</span>
-                                                    </span>
-                                                </a>
+                                                @* user has to be an admin or mod to delete comment *@
+                                                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
+                                                {
+                                                    <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">
+                                                        <span class="hover-flip-item">
+                                                            <span data-text="Delete">Delete</span>
+                                                        </span>
+                                                    </a>
+                                                }
                                         </div>
                                     </div>
                             </div>

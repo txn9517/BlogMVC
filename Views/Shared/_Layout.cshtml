@@ -70,8 +70,12 @@
                                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                                     <li><a asp-controller="BlogPosts" asp-action="Index">BlogPosts</a></li>
                                     <li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
-                                    <li><a asp-controller="Comments" asp-action="Index">Comments</a></li>
+                                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
+                                    {
+                                        <li><a asp-controller="Comments" asp-action="Index">Comments</a></li>
+                                    }
                                     <li><a asp-controller="Tags" asp-action="Index">Tags</a></li>
+                                    <li><a asp-controller="Home" asp-action="ContactMe">Contact Me</a></li>
                                 </ul>
                                 <!-- End Mainmanu Nav -->
                             </nav>
@@ -167,6 +171,7 @@
                 </div>
             </div>
             <!-- End Footer Top Area  -->
+
             <!-- Start Copyright Area  -->
             <div class="copyright-area">
                 <div class="container">
@@ -218,6 +223,9 @@
     <!-- CKEditor 5 -->
     <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
     @*<script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/super-build/ckeditor.js"></script>*@
+
+    <!-- Sweet Alerts -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

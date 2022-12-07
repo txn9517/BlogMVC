@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlogMVC.Models
 {
@@ -27,6 +28,7 @@ namespace BlogMVC.Models
         public string? UpdateReason { get; set; }
 
         [Required]
+        [Display(Name = "Comment")]
         [StringLength(5000, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long", MinimumLength = 2)]
         public string? Body { get; set; }
 

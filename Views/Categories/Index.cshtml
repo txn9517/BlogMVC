@@ -2,6 +2,7 @@
 @using BlogMVC.Services.Interfaces
 @using BlogMVC.Enums
 @inject IImageService ImageService
+@inject IBlogPostService BlogPostService
 
 @{
     ViewData["Title"] = "Index";
@@ -10,46 +11,43 @@
 <!-- Category Index -->
 
 <div class="container mt-5">
-    <h1>Your Categories</h1>
+    <div class="axil-single-widget widget widget_categories mb--30">
+        <h1>Categories</h1>
+        @* user is logged in and is an admin or mod to create categories *@
+        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+        {
+            <div class="row mb-3">
+                <div class="col-12 col-lg-3">
+                    <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
+                    </div>
+            </div>
+        }
+        <ul>
+            @foreach (Category item in (await BlogPostService.GetCategoriesAsync()))
+            {
+                <li class="cat-item">
+                    <a asp-controller="Categories" asp-action="Details" asp-route-id="@item.Id" class="inner">
+                        <div class="thumbnail">
+                            <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.CategoryImage)" alt="category pictures">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">@item.Name</h5>
+                        </div>
+                    </a>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageData)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                   <img src="@ImageService.ConvertByteArrayToFile(item.ImageData!, item.ImageType!, (int)DefaultImage.CategoryImage)" class="img-fluid" style="max-width: 150px;" alt="category picture">
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>
+                    @* user has to be an admin or mod to edit categories *@
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                    {
+                        <a asp-action="Edit" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Edit</a>
+                            
+                        @* user has to be an admin to delete categories *@
+                        @if (User.IsInRole("Administrator"))
+                        {
+                                <a asp-action="Delete" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Delete</a>
+                         }
+                    }
+                </li>
+            }
+        </ul>
+    </div>
 </div>

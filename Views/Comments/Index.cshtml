@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<BlogMVC.Models.Comment>
+@using BlogMVC.Services.Interfaces
+@using BlogMVC.Enums
+@inject IImageService ImageService
 
 @{
     ViewData["Title"] = "Index";
@@ -9,13 +12,19 @@
 <div class="container mt-5">
     <h1>Comments</h1>
 
-    <p>
+    @*<p>
         <a asp-action="Create">Create New</a>
-    </p>
+    </p>*@
 
     <table class="table">
         <thead>
             <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Body)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Author)
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.DateCreated)
                 </th>
@@ -26,13 +35,10 @@
                     @Html.DisplayNameFor(model => model.UpdateReason)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Body)
+                    @Html.DisplayNameFor(model => model.BlogPost!.Title)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.BlogPost)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Author)
+                    @Html.DisplayNameFor(model => model.BlogPost!.BlogPostImage)
                 </th>
                 <th></th>
             </tr>
@@ -40,6 +46,12 @@
         <tbody>
     @foreach (var item in Model) {
             <tr>
+                <td>
+                    @Html.Raw(item.Body)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author!.FullName)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateCreated)
                 </td>
@@ -50,18 +62,14 @@
                     @Html.DisplayFor(modelItem => item.UpdateReason)
                 </td>
                 <td>
-                    @Html.Raw(item.Body)
+                    @Html.DisplayFor(modelItem => item.BlogPost!.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.BlogPost.Content)
+                    <img src="@ImageService.ConvertByteArrayToFile(item.BlogPost!.ImageData!, item.BlogPost!.ImageType!, (int)DefaultImage.BlogPostImage)" class="img-fluid" style="max-height: 150px;" alt="blog post pictures">
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Author.FullName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" class="btn btn-primary rounded-pill my-2" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
     }

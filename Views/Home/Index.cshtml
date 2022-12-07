@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="col-lg-8 col-xl-8">
-                @foreach(BlogPost post in Model) 
+                @foreach (BlogPost post in Model)
                 {
                     <!-- Start Post List  -->
                     <div class="content-block post-list-view mt--30">
@@ -98,28 +98,25 @@
                                             <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
                                             <li>@post.Comments!.Count comments</li>
                                         </ul>
-                                        @* user has to be logged in *@
-                                        @if (User.Identity!.IsAuthenticated) {
-                                            @* user has to be an admin or mod to see Edit *@
-                                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                                            {
-                                                <div class="row my-2">
+                                        @* user has to be an admin or mod to see Edit *@
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                        {
+                                            <div class="row my-2">
+                                                <div class="col-12 col-lg-6">
+                                                    <a class="btn btn-primary rounded-pill" asp-action="Edit" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                        <span data-text="Edit">Edit</span>
+                                                    </a>
+                                                </div>
+                                                @* user has to be an admin to see Delete *@
+                                                @if (User.IsInRole("Administrator"))
+                                                {
                                                     <div class="col-12 col-lg-6">
-                                                        <a class="btn btn-primary rounded-pill" asp-action="Edit" asp-controller="BlogPosts" asp-route-id="@post.Id">
-                                                                <span data-text="Edit">Edit</span>
+                                                        <a class="btn btn-primary rounded-pill" asp-action="Delete" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                            <span data-text="Delete">Delete</span>
                                                         </a>
                                                     </div>
-                                                    @* user has to be an admin to see Delete *@
-                                                    @if (User.IsInRole("Administrator"))
-                                                    {
-                                                        <div class="col-12 col-lg-6">
-                                                            <a class="btn btn-primary rounded-pill" asp-action="Delete" asp-controller="BlogPosts" asp-route-id="@post.Id">
-                                                                    <span data-text="Delete">Delete</span>
-                                                            </a>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            }
+                                                }
+                                            </div>
                                         }
                                     </div>
                                 </div>
@@ -138,16 +135,17 @@
                 <div class="d-flex justify-content-end my-auto">
                     Page @(Model.PageCount < Model.PageNumber ? 1 : Model.PageNumber) of @Model.PageCount
                 </div>
-                <div id="page-selector" class="my-5 py-5">
+                <div id="page-selector" class="my-2 py-2">
                     @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }),
                     new PagedListRenderOptions {
-                        ContainerDivClasses = new string[] { "axil-single-widget", "widget", "widget_social" },
-                        UlElementClasses = new string[] { "social-icon", "justify-content-center" },
-                        LiElementClasses = new string[] { "fab", "fw-bold" }
+                    ContainerDivClasses = new string[] { "axil-single-widget", "widget", "widget_social" },
+                    UlElementClasses = new string[] { "social-icon", "justify-content-center" },
+                    LiElementClasses = new string[] { "fab", "fw-bold" }
                     })
                 </div>
 
             </div>
+
             <!-- add sidebar partial -->
             <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
                 <partial name="_Sidebar" />
@@ -157,3 +155,24 @@
 </div>
 <!-- End Post List Wrapper  -->
 
+@section scripts {
+    <!-- Sweet Alerts -->
+    <script>
+        let message = '@(ViewBag.SwalMessage)';
+        if (!message.includes("Error") && message != '') {
+            Swal.fire({
+                backdrop: false,
+                icon: 'success',
+                title: message,
+                showConfirmButton: true
+            })
+        } else if (message.includes("Error")) {
+            Swal.fire({
+                backdrop: false,
+                icon: 'error',
+                title: 'Oops...',
+                text: message
+            })
+        }
+    </script>
+}

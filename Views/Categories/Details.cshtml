@@ -61,13 +61,32 @@
                                             <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
                                             <li>@post.Comments!.Count comments</li>
                                         </ul>
+                                        @* user has to be an admin or mod to see Edit *@
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                        {
+                                            <div class="row my-2">
+                                                <div class="col-12 col-lg-6">
+                                                    <a class="btn btn-primary rounded-pill" asp-action="Edit" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                        <span data-text="Edit">Edit</span>
+                                                    </a>
+                                                </div>
+                                                @* user has to be an admin to see Delete *@
+                                                @if (User.IsInRole("Administrator"))
+                                                {
+                                                    <div class="col-12 col-lg-6">
+                                                        <a class="btn btn-primary rounded-pill" asp-action="Delete" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                            <span data-text="Delete">Delete</span>
+                                                        </a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                                 <ul class="social-share-transparent justify-content-end">
-                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fas fa-link"></i></a></li>
+                                    <li><a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="https://www.linkedin.com/?trk=guest_homepage-basic_nav-header-logo"><i class="fab fa-linkedin"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -76,11 +95,20 @@
                 }
 
                 <!-- add page list -->
-                <div>
+                <div class="d-flex justify-content-end my-auto">
                     Page @(Model.PageCount < Model.PageNumber ? 1 : Model.PageNumber) of @Model.PageCount
                 </div>
-                <div id="page-selector" class="my-5 py-5">
-                    @Html.PagedListPager(Model, pageNum => Url.Action("Details", new { pageNum, id = Model.FirstOrDefault()?.CategoryId }))
+                <div id="page-selector" class="my-2 py-2">
+                    @Html.PagedListPager(Model, pageNum => Url.Action("Details", new { pageNum, id = Model.FirstOrDefault()?.CategoryId }),
+                    new PagedListRenderOptions {
+                    ContainerDivClasses = new string[] { "axil-single-widget", "widget", "widget_social" },
+                    UlElementClasses = new string[] { "social-icon", "justify-content-center" },
+                    LiElementClasses = new string[] { "fab", "fw-bold" }
+                    })
+                </div>
+
+                <div class="mt-2 text-end">
+                    <a asp-action="Index" class="btn btn-primary rounded-pill">Back to List</a>
                 </div>
 
             </div>
@@ -92,41 +120,3 @@
     </div>
 </div>
 <!-- End Post List Wrapper  -->
-
-
-@*<h1>Details</h1>
-
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageData)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageData)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageType)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>*@
