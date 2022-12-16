@@ -83,7 +83,7 @@ namespace BlogMVC.Controllers
             {
                 comment.AuthorId = _userManager.GetUserId(User);
 
-                // DateCreated
+                // set date created
                 comment.DateCreated = DateTime.UtcNow;
 
                 _context.Add(comment);
@@ -148,9 +148,10 @@ namespace BlogMVC.Controllers
             {
                 try
                 {
+                    // set date created and last updated
                     comment.DateCreated = DateTime.SpecifyKind(comment.DateCreated!, DateTimeKind.Utc);
-                    // check this
-                    comment.LastUpdated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+                    
+                    comment.LastUpdated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
 
                     _context.Update(comment);
                     await _context.SaveChangesAsync();

@@ -76,7 +76,7 @@ var app = builder.Build();
 // use policy
 app.UseCors("DefaultPolicy");
 
-// TODO: call ManageDataAsync
+// call ManageDataAsync
 var scope = app.Services.CreateScope();
 // seed users & roles to db
 await DataUtility.ManageDataAsync(scope.ServiceProvider);

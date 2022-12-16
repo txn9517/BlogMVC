@@ -31,7 +31,10 @@
                                 </a>
                             </h6>
                             <div class="comment-meta">
-                                <div class="time-spent">@comment.DateCreated.ToString("MMM dd, yyyy hh:mm tt")</div>
+                                <div class="time-spent">@comment.DateCreated.ToString("MMM dd, yyyy hh:mm tt") <small><i>Date created</i></small>
+                                                        <br>
+                                                        @comment.LastUpdated?.ToString("MMM dd, yyyy hh:mm tt") <small><i>Last updated</i></small>
+                                </div>
                                     <div class="reply-edit">
                                         <div class="reply">
                                                 @* user has to be logged in to see edit button *@

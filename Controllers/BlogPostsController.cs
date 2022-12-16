@@ -223,10 +223,10 @@ namespace BlogMVC.Controllers
                     _context.Update(blogPost);
                     await _context.SaveChangesAsync();
 
-                    // TODO: remove current blog post tags
+                    // remove current blog post tags
                     await _blogPostService.RemoveAllBlogPostTagsAsync(blogPost.Id);
 
-                    // TODO: add tags selected to the blog post
+                    // add tags selected to the blog post
                     await _blogPostService.AddTagsToBlogPostsAsync(stringTags, blogPost.Id);
 
                 }
