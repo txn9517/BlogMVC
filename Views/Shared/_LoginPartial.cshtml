@@ -37,10 +37,15 @@
 }
 else
 {
-    <li>
-        <a asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li>
-        <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+    <li class="menu-item-has-children">
+        <a href="#">Login <i class="ms-1 fal fa-arrow-right"></i></a>
+        <ul class="axil-submenu" style="min-width: 100px !important;width: 100%">
+            <li class="text-start">
+                <a asp-area="Identity" asp-page="/Account/Login">Sign In</a>
+            </li>
+            <li class="text-start">
+                <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </li>
+        </ul>
     </li>
 }
