@@ -34,11 +34,15 @@
                                 <div class="time-spent">@comment.DateCreated.ToString("MMM dd, yyyy hh:mm tt")</div>
                                     <div class="reply-edit">
                                         <div class="reply">
-                                                <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">
-                                                    <span class="hover-flip-item">
-                                                        <span data-text="Edit">Edit</span>
-                                                    </span>
-                                                </a>
+                                                @* user has to be logged in to see edit button *@
+                                                @if (User.Identity!.IsAuthenticated)
+                                                {
+                                                    <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">
+                                                        <span class="hover-flip-item">
+                                                            <span data-text="Edit">Edit</span>
+                                                        </span>
+                                                    </a>
+                                                }
                                                 @* user has to be an admin or mod to delete comment *@
                                                 @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
                                                 {

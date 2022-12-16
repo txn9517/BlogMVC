@@ -86,9 +86,6 @@ namespace BlogMVC.Controllers
                 // DateCreated
                 comment.DateCreated = DateTime.UtcNow;
 
-                // LastUpdated
-                comment.LastUpdated = DateTime.UtcNow;
-
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "BlogPosts", new { slug });
@@ -132,7 +129,7 @@ namespace BlogMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogPostId,AuthorId,DateCreated,LastUpdated,UpdateReason,Body")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogPostId,AuthorId,DateCreated,LastUpdated,UpdateReason,Body")] Comment comment, string? slug)
         {
             if (id != comment.Id)
             {
@@ -151,11 +148,9 @@ namespace BlogMVC.Controllers
             {
                 try
                 {
-                    // set DateCreated
-                    comment.DateCreated = DateTime.SpecifyKind(comment.DateCreated, DateTimeKind.Utc);
-
+                    comment.DateCreated = DateTime.SpecifyKind(comment.DateCreated!, DateTimeKind.Utc);
                     // check this
-                    comment.LastUpdated = DateTime.SpecifyKind(comment.LastUpdated!.Value, DateTimeKind.Utc);
+                    comment.LastUpdated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
 
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
@@ -171,7 +166,7 @@ namespace BlogMVC.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index", "BlogPosts");
+                return RedirectToAction("Index", "BlogPosts", new { slug });
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);

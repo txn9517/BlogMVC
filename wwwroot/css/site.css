@@ -112,7 +112,7 @@ footer {
     font-size: 0.9rem;
 }
 
-button overrides
+/* button overrides */
 .btn-outline-primary {
     color: var(--tn-background-color); /* change color of button */
     border-color: var(--tn-nav-toggler-glow) !important;
