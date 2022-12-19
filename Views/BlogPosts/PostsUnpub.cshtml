@@ -1,6 +1,9 @@
-﻿@model IEnumerable<BlogMVC.Models.BlogPost>
+﻿@model IPagedList<BlogMVC.Models.BlogPost>
 @using BlogMVC.Services.Interfaces
 @using BlogMVC.Enums
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
 @inject IImageService ImageService
 
 @{
@@ -83,6 +86,19 @@
                         </div>
                         <!-- End Post List  -->
                     }
+
+                    <!-- add page list -->
+                    <div class="d-flex justify-content-end my-auto">
+                        Page @(Model.PageCount < Model.PageNumber ? 1 : Model.PageNumber) of @Model.PageCount
+                    </div>
+                    <div id="page-selector" class="my-2 py-2">
+                        @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }),
+                        new PagedListRenderOptions {
+                        ContainerDivClasses = new string[] { "axil-single-widget", "widget", "widget_social" },
+                        UlElementClasses = new string[] { "social-icon", "justify-content-center" },
+                        LiElementClasses = new string[] { "fab", "fw-bold" }
+                        })
+                    </div>
 
                     <div class="mt-2 text-end">
                         <a asp-action="Index" class="btn btn-primary rounded-pill">Back to List</a>

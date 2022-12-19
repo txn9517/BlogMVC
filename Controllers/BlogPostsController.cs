@@ -40,38 +40,58 @@ namespace BlogMVC.Controllers
 
         // GET: BlogPosts
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNum)
         {
-            List<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsPubAsync()).ToList();
+            // add page list functionality
+            int pageSize = 10;
+            // if pageNum is null, set equal to 1
+            int page = pageNum ?? 1;
+
+            IPagedList<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsPubAsync()).ToPagedList(page, pageSize);
 
             return View(blogPosts);
         }
 
         // GET: BlogPosts/PostsUnpub
         [Authorize(Roles = "Administrator,Moderator")]
-        public async Task<IActionResult> PostsUnpub()
+        public async Task<IActionResult> PostsUnpub(int? pageNum)
         {
-            List<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsUnpubAsync()).ToList();
+            // add page list functionality
+            int pageSize = 10;
+            // if pageNum is null, set equal to 1
+            int page = pageNum ?? 1;
+
+            IPagedList<BlogPost> blogPosts = (await _blogPostService.GetAllBlogPostsUnpubAsync()).ToPagedList(page, pageSize);
 
             return View(blogPosts);
         }
 
         // GET: BlogPosts/DeletedPostsPub
         [Authorize(Roles=("Administrator"))]
-        public async Task<IActionResult> DeletedPostsPub()
+        public async Task<IActionResult> DeletedPostsPub(int? pageNum)
         {
+            // add page list functionality
+            int pageSize = 10;
+            // if pageNum is null, set equal to 1
+            int page = pageNum ?? 1;
+
             // call service to view deleted blogs
-            List<BlogPost> blogPosts = (await _blogPostService.GetDeletedBlogPostsPubAsync()).ToList();
+            IPagedList<BlogPost> blogPosts = (await _blogPostService.GetDeletedBlogPostsPubAsync()).ToPagedList(page, pageSize);
 
             return View(blogPosts);
         }
 
         // GET: BlogPosts/DeletedPostsUnpub
         [Authorize(Roles=("Administrator"))]
-        public async Task<IActionResult> DeletedPostsUnpub()
+        public async Task<IActionResult> DeletedPostsUnpub(int? pageNum)
         {
+            // add page list functionality
+            int pageSize = 10;
+            // if pageNum is null, set equal to 1
+            int page = pageNum ?? 1;
+
             // call service to view deleted blogs
-            List<BlogPost> blogPosts = (await _blogPostService.GetDeletedBlogPostsUnpubAsync()).ToList();
+            IPagedList<BlogPost> blogPosts = (await _blogPostService.GetDeletedBlogPostsUnpubAsync()).ToPagedList(page, pageSize);
 
             return View(blogPosts);
         }
