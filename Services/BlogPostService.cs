@@ -35,7 +35,7 @@ namespace BlogMVC.Services
                                           .Include(b => b.Category)
                                           .Include(b => b.Comments)
                                           .Include(b => b.Tags)
-                                          .OrderByDescending(b => b.DateCreated)
+                                          .OrderBy(b => b.DateCreated)
                                           .ToListAsync();
                 return blogPosts;
 
@@ -59,7 +59,7 @@ namespace BlogMVC.Services
                                           .Include(b => b.Creator)
                                           .Include(b => b.Comments)
                                           .Include(b => b.Tags)
-                                          .OrderByDescending(b => b.DateCreated)
+                                          .OrderBy(b => b.DateCreated)
                                           .ToListAsync();
                 return blogPosts;
 
@@ -83,7 +83,7 @@ namespace BlogMVC.Services
                                     .Include(b => b.Creator)
                                     .Include(b => b.Comments)
                                     .Include(b => b.Tags)
-                                    .OrderByDescending(b => b.DateCreated)
+                                    .OrderBy(b => b.DateCreated)
                                     .ToListAsync();
 
                 return blogPosts;
@@ -107,7 +107,7 @@ namespace BlogMVC.Services
                                     .Include(b => b.Creator)
                                     .Include(b => b.Comments)
                                     .Include(b => b.Tags)
-                                    .OrderByDescending(b => b.DateCreated)
+                                    .OrderBy(b => b.DateCreated)
                                     .ToListAsync();
 
                 return blogPosts;
@@ -129,7 +129,7 @@ namespace BlogMVC.Services
                                                 .ThenInclude(c => c.Author)
                                             .Include(b => b.Tags)
                                             .FirstOrDefaultAsync(m => m.Slug == slug);
-                return blogPost;
+                return blogPost!;
 
             }
             catch (Exception)
@@ -146,7 +146,7 @@ namespace BlogMVC.Services
                                             .Include(b => b.Tags)
                                             .FirstOrDefaultAsync(b => b.Id == id);
 
-                return blogPost;
+                return blogPost!;
 
             } catch (Exception)
             {
@@ -164,7 +164,7 @@ namespace BlogMVC.Services
                                                     .Include(b => b.Comments)
                                                     .FirstOrDefaultAsync(m => m.Id == id);
 
-                return blogPost;
+                return blogPost!;
 
             } catch (Exception)
             {
@@ -215,7 +215,7 @@ namespace BlogMVC.Services
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Tags)
                                                         .Include(b => b.Creator)
-                                                        .OrderByDescending(b => b.DateCreated)
+                                                        .OrderBy(b => b.DateCreated)
                                                         .ToListAsync();
 
                 return blogPosts;
@@ -408,7 +408,7 @@ namespace BlogMVC.Services
                                                     .Include(b => b.Tags)
                                                     .Include(b => b.Creator)
                                                     .AsNoTracking()
-                                                    .OrderByDescending(b => b.DateCreated)
+                                                    .OrderBy(b => b.DateCreated)
                                                     .AsEnumerable();
 
                     return blogPosts;

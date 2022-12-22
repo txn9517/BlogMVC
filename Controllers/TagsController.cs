@@ -48,6 +48,8 @@ namespace BlogMVC.Controllers
                                                     .Where(b => b.IsDeleted == false && b.IsPublished == true)
                                                     .Include(b => b.Tags)
                                                     .Include(b => b.Category)
+                                                    .Include(b => b.Creator)
+                                                    .Include(b => b.Comments)
                                                     .OrderByDescending(b => b.DateCreated)
                                                     .ToPagedList(page, pageSize);
 
@@ -67,8 +69,6 @@ namespace BlogMVC.Controllers
         }
 
         // POST: Tags/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]
@@ -102,8 +102,6 @@ namespace BlogMVC.Controllers
         }
 
         // POST: Tags/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]

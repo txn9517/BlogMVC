@@ -128,8 +128,6 @@ namespace BlogMVC.Controllers
         }
 
         // POST: BlogPosts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]
@@ -203,8 +201,6 @@ namespace BlogMVC.Controllers
         }
 
         // POST: BlogPosts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]
@@ -276,10 +272,6 @@ namespace BlogMVC.Controllers
             {
                 return NotFound();
             }
-
-            //BlogPost? blogPost = await _context.BlogPosts
-            //    .Include(b => b.Category)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
 
             BlogPost? blogPost = await _blogPostService.GetBlogPostDeleteDetails(id);
 

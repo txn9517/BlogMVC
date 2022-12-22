@@ -89,6 +89,13 @@
                     <div class="col-xl-3 col-lg-8 col-md-8 col-sm-9 col-12">
                         <div class="header-search text-end d-flex align-items-center">
                             
+                            <div class="mainmenu-wrapper d-none d-xl-block ms-auto">
+                                <div class="mainmenu-nav">
+                                    <ul class="mainmenu">
+                                        <partial name="_LoginPartial" />
+                                    </ul>
+                                </div>
+                            </div>
                             <form class="header-search-form d-sm-block d-none" asp-controller="Home" asp-action="SearchIndex">
                                 <div class="axil-search form-group">
                                     <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
@@ -104,13 +111,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="mainmenu-wrapper d-none d-xl-block ms-auto">
-                                <div class="mainmenu-nav">
-                                    <ul class="mainmenu">
-                                        <partial name="_LoginPartial" />
-                                    </ul>
-                                </div>
-                            </div>
+                            
                             <!-- Start Hamburger Menu  -->
                             <div class="hamburger-menu d-block d-xl-none me-sm-auto">
                                 <div class="hamburger-inner">

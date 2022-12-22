@@ -56,7 +56,7 @@ namespace BlogMVC.Controllers
                                                     .Include(b => b.Comments)
                                                     .Include(b => b.Category)
                                                     .Include(b => b.Tags)
-                                                    .OrderByDescending(b => b.DateCreated)
+                                                    .OrderBy(b => b.DateCreated)
                                                     .ToPagedList(page, pageSize);
 
             if (blogPosts == null)
@@ -75,8 +75,6 @@ namespace BlogMVC.Controllers
         }
 
         // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]
@@ -119,8 +117,6 @@ namespace BlogMVC.Controllers
         }
 
         // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]

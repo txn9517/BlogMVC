@@ -72,7 +72,7 @@
                         <div class="post-content">
                             <div class="post-cat">
                                 <div class="post-cat-list">
-                                    <a class="hover-flip-item-wrapper">
+                                    <a class="hover-flip-item-wrapper" asp-controller="Categories" asp-action="Details" asp-route-id="@post.CategoryId">
                                         <span class="hover-flip-item">
                                             <span data-text="@post.Category!.Name">@post.Category.Name</span>
                                         </span>
@@ -120,11 +120,6 @@
                                         }
                                     </div>
                                 </div>
-                                <ul class="social-share-transparent justify-content-end">
-                                    <li><a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li><a href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="https://www.linkedin.com/?trk=guest_homepage-basic_nav-header-logo"><i class="fab fa-linkedin"></i></a></li>
-                                </ul>
                             </div>
                         </div>
                     </div>

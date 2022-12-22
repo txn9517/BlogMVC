@@ -25,7 +25,7 @@ namespace BlogMVC.Services
 
             try
             {
-                string imageBase64Data = Convert.ToBase64String(fileData);
+                string imageBase64Data = Convert.ToBase64String(fileData!);
 
                 string imageSrcString = string.Format($"data:{extension};base64, {imageBase64Data}");
 
