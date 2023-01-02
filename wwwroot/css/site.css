@@ -282,3 +282,7 @@ figcaption {
     color: darkgray !important;
     border-color: lightgray;
 }
+
+.ck-editor__editable {
+    min-height: 25px;
+}

@@ -9,6 +9,7 @@ using BlogMVC.Data;
 using BlogMVC.Models;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
+using BlogMVC.Services.Interfaces;
 
 namespace BlogMVC.Controllers
 {
@@ -30,7 +31,7 @@ namespace BlogMVC.Controllers
 
         // GET: Tags/Details/5
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int? id, int? pageNum)
+        public async Task<IActionResult> Details(int? id, int? pageNum, int tagId)
         {
             if (id == null)
             {
@@ -43,15 +44,25 @@ namespace BlogMVC.Controllers
             int page = pageNum ?? 1;
 
             // get the blog posts for specific tag
-            // TODO: check this
             IPagedList<BlogPost> blogPosts = _context.BlogPosts
                                                     .Where(b => b.IsDeleted == false && b.IsPublished == true)
                                                     .Include(b => b.Tags)
                                                     .Include(b => b.Category)
                                                     .Include(b => b.Creator)
                                                     .Include(b => b.Comments)
-                                                    .OrderByDescending(b => b.DateCreated)
+                                                    .Where(b => b.Tags.Any(t => t.Id == id))
+                                                    .OrderBy(b => b.DateCreated)
                                                     .ToPagedList(page, pageSize);
+
+            //Tag? tag = await _context.Tags
+            //                    .Include(t => t.BlogPosts)
+            //                        .ThenInclude(b => b.Category)
+            //                    .FirstOrDefaultAsync(m => m.Id == id);
+
+            //if (tag == null)
+            //{
+            //    return NotFound();
+            //}
 
             if (blogPosts == null)
             {

@@ -11,29 +11,25 @@
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <form id="profile-form" method="post" enctype="multipart/form-data">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-12 col-lg-8">
+        <div class="col-12 col-lg-6">
             <div class="form-floating">
                 <input asp-for="Username" class="form-control" disabled />
                 <label asp-for="Username" class="form-label"></label>
             </div>
-        </div>
-        <div class="col-12 col-lg-6">
             <div class="form-floating my-2">
                 <input asp-for="Input.FirstName" class="form-control" aria-required="true" />
                 <label asp-for="Input.FirstName"></label>
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
-        </div>
-        <div class="col-12 col-lg-6">
-                <div class="form-floating my-2">
-                    <input asp-for="Input.LastName" class="form-control" aria-required="true" />
-                    <label asp-for="Input.LastName"></label>
-                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                </div>
-        </div>
-        <div class="col-12 col-lg-6">
+
+            <div class="form-floating my-2">
+                <input asp-for="Input.LastName" class="form-control" aria-required="true" />
+                <label asp-for="Input.LastName"></label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
             <div class="form-floating my-2">
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
@@ -43,17 +39,17 @@
         <div class="col-12 col-lg-6">
             <div class="form-group">
                 <label asp-for="Input.ImageData" style="width: 100%;">Upload a Profile Image</label>
-                
+
                 <img id="userImage" class="img-fluid img-thumbnail rounded" src="@ImageService.ConvertByteArrayToFile(Model.Input.ImageData!, Model.Input.ImageType!, (int)DefaultImage.BlogUserImage)" alt="blog user picture">
-                
+
                 <input asp-for="Input.UserImage" type="file" class="form-control" accept=".png,.jpg,.jpeg,.gif"
-                    style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"   
-                    onchange="document.getElementById('userImage').src=window.URL.createObjectURL(this.files[0])" />
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('userImage').src=window.URL.createObjectURL(this.files[0])" />
 
                 <span asp-validation-for="Input.UserImage" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="d-flex justify-content-end">
             <button id="update-profile-button" type="submit" class="btn btn-lg btn-primary rounded-pill my-2">Save</button>
         </div>
     </div>

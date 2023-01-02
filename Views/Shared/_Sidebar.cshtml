@@ -25,6 +25,20 @@
                         </div>
                         <div class="content">
                             <h5 class="title">@item.Name</h5>
+                            <ul class="post-meta-list">
+                                @if (item.BlogPosts.Count > 1)
+                                {
+                                    <li>@item.BlogPosts.Count posts</li>
+                                }
+                                else if (item.BlogPosts.Count == 1)
+                                {
+                                    <li>@item.BlogPosts.Count post</li>
+                                }
+                                else
+                                {
+                                    <li>0 posts</li>
+                                }
+                            </ul>
                         </div>
                     </a>
                 </li>
@@ -118,6 +132,20 @@
                     <a asp-controller="Tags" asp-action="Details" asp-route-id="@item.Id" class="inner">
                         <div class="content">
                             <h5 class="title">@item.Name</h5>
+                            <ul class="post-meta-list">
+                                @if (item.BlogPosts.Count > 1)
+                                {
+                                    <li>@item.BlogPosts.Count posts</li>
+                                }
+                                else if (item.BlogPosts.Count == 1)
+                                {
+                                    <li>@item.BlogPosts.Count post</li>
+                                }
+                                else
+                                {
+                                    <li>0 posts</li>
+                                }
+                            </ul>
                         </div>
                     </a>
                 </li>

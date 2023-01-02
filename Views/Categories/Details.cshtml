@@ -64,9 +64,9 @@
                                         @* user has to be an admin or mod to see Edit *@
                                         @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
                                         {
-                                            <div class="row my-2">
+                                            <div class="row">
                                                 <div class="col-12 col-lg-6">
-                                                    <a class="btn btn-primary rounded-pill" asp-action="Edit" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                    <a class="btn btn-primary rounded-pill my-2" asp-action="Edit" asp-controller="BlogPosts" asp-route-id="@post.Id">
                                                         <span data-text="Edit">Edit</span>
                                                     </a>
                                                 </div>
@@ -74,7 +74,7 @@
                                                 @if (User.IsInRole("Administrator"))
                                                 {
                                                     <div class="col-12 col-lg-6">
-                                                        <a class="btn btn-primary rounded-pill" asp-action="Delete" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                        <a class="btn btn-primary rounded-pill my-2" asp-action="Delete" asp-controller="BlogPosts" asp-route-id="@post.Id">
                                                             <span data-text="Delete">Delete</span>
                                                         </a>
                                                     </div>
@@ -100,10 +100,6 @@
                     UlElementClasses = new string[] { "social-icon", "justify-content-center" },
                     LiElementClasses = new string[] { "fab", "fw-bold" }
                     })
-                </div>
-
-                <div class="mt-2 text-end">
-                    <a asp-action="Index" class="btn btn-primary rounded-pill">Back to List</a>
                 </div>
 
             </div>

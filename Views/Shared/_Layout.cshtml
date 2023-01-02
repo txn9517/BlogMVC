@@ -2,7 +2,9 @@
 <html lang="en">
 
 @using Microsoft.AspNetCore.Identity
+@using BlogMVC.Services.Interfaces
 @inject SignInManager<BlogUser> SignInManager
+@inject IBlogPostService BlogPostService
 
 <head>
     <meta charset="utf-8" />
@@ -33,6 +35,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
+
+@{
+    List<Category> categories = (await BlogPostService.GetCategoriesAsync()).Take(8).ToList();
+    List<Tag> tags = (await BlogPostService.GetTagsAsync()).Take(8).ToList();
+}
 
 <body>
     <div class="main-wrapper">
@@ -72,13 +79,108 @@
                                 <!-- Start Mainmanu Nav -->
                                 <ul class="mainmenu">
                                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                                    <li><a asp-controller="BlogPosts" asp-action="Index">BlogPosts</a></li>
-                                    <li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
-                                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
+                                    <!-- BlogPosts -->
+                                    <li class="menu-item-has-children">
+                                        <a asp-controller="BlogPosts" asp-action="Index">BlogPosts</a>
+                                        @* user is logged in and is an admin or mod to create and publish unpublished posts *@
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                        {
+                                            <ul class="axil-submenu">
+                                                <li>
+                                                    <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="Create">
+                                                        <span class="hover-flip-item">
+                                                            <span data-text="Create New">Create New</span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="PostsUnpub">
+                                                        <span class="hover-flip-item">
+                                                            <span data-text="Unpublished Posts">Unpublished Posts</span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                @* only admin can see deleted posts *@
+                                                @if (User.IsInRole("Administrator"))
+                                                {
+                                                    <li>
+                                                        <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="DeletedPostsPub">
+                                                            <span class="hover-flip-item">
+                                                                <span data-text="Deleted Posts - Published">Deleted Posts - Published</span>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="DeletedPostsUnpub">
+                                                            <span class="hover-flip-item">
+                                                                <span data-text="Deleted Posts - Unpublished">Deleted Posts - Unpublished</span>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                    </li>
+                                    <!-- Categories -->
+                                    <li class="menu-item-has-children">
+                                        <a asp-controller="Categories" asp-action="Index">Categories</a>
+                                        
+                                        <ul class="axil-submenu">
+                                            @* user is logged in and is an admin or mod to create categories *@
+                                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                            {
+                                                <li>
+                                                    <a class="hover-flip-item-wrapper" asp-controller="Categories" asp-action="Create">
+                                                        <span class="hover-flip-item">
+                                                            <span data-text="Create New">Create New</span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            @foreach (Category item in categories) {
+                                                <li>
+                                                    <a class="hover-flip-item-wrapper" asp-controller="Categories" asp-action="Details" asp-route-id="@item.Id">
+                                                        <span class="hover-flip-item">
+                                                            <span data-text="@item.Name">@item.Name</span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                }
+                                        </ul>
+                                    </li>
+                                    <!-- Comments -->
+                                    <!-- user has to be an admin or mod to see comments -->
+                                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
                                     {
                                         <li><a asp-controller="Comments" asp-action="Index">Comments</a></li>
                                     }
-                                    <li><a asp-controller="Tags" asp-action="Index">Tags</a></li>
+                                    <!-- Tags -->
+                                    <li class="menu-item-has-children">
+                                        <a asp-controller="Tags" asp-action="Index">Tags</a>
+                                            
+                                        <ul class="axil-submenu">
+                                            @* user is logged in and is an admin or mod to create tags *@
+                                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                            {
+                                                <li>
+                                                    <a class="hover-flip-item-wrapper" asp-controller="Tags" asp-action="Create">
+                                                        <span class="hover-flip-item">
+                                                            <span data-text="Create New">Create New</span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            @foreach (Tag tag in tags) {
+                                                <li>
+                                                    <a class="hover-flip-item-wrapper" asp-controller="Tags" asp-action="Details" asp-route-id="@tag.Id">
+                                                        <span class="hover-flip-item">
+                                                            <span data-text="@tag.Name">@tag.Name</span>
+                                                        </span>
+                                                     </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
                                     <li><a asp-controller="Home" asp-action="ContactMe">Contact Me</a></li>
                                 </ul>
                                 <!-- End Mainmanu Nav -->
@@ -143,11 +245,85 @@
                     </div>
                 </div>
                 <ul class="mainmenu">
-                    <li><a asp-action="Index" asp-controller="Home">Home</a></li>
-                    <li><a asp-action="Index" asp-controller="BlogPosts">Blog Posts</a></li>
-                    <li><a asp-action="Index" asp-controller="Categories">Categories</a></li>
-                    <li><a asp-action="Index" asp-controller="Comments">Comments</a></li>
-                    <li><a asp-action="Index" asp-controller="Tags">Tags</a></li>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <!-- BlogPosts -->
+                    <li class="menu-item-has-children">
+                        <a href="#">BlogPosts</a>
+                        @* user is logged in and is an admin or mod to create and publish unpublished posts *@
+                        <ul class="axil-submenu">
+                            <li>
+                                <a asp-controller="BlogPosts" asp-action="Index">Published Posts</a>
+                            </li>
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                            {
+                                <li>
+                                    <a asp-controller="BlogPosts" asp-action="Create">Create New</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="BlogPosts" asp-action="PostsUnpub">Unpublished Posts</a>
+                                </li>
+                                @* only admin can see deleted posts *@
+                                @if (User.IsInRole("Administrator"))
+                                {
+                                    <li>
+                                        <a asp-controller="BlogPosts" asp-action="DeletedPostsPub">Deleted Posts - Published</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="BlogPosts" asp-action="DeletedPostsUnpub">Deleted Posts - Unpublished</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                    <!-- Categories -->
+                    <li class="menu-item-has-children">
+                        <a href="#">Categories</a>
+                        <ul class="axil-submenu">
+                            @* user is logged in and is an admin or mod to create categories *@
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                            {
+                                <li>
+                                    <a asp-controller="Categories" asp-action="Create">Create New</a>
+                                </li>
+                            }
+                            @foreach (Category item in categories) {
+                                <li>
+                                    <a asp-controller="Categories" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                                </li>
+                            }
+                            <li>
+                                <a asp-controller="Categories" asp-action="Index">All Categories</a>
+                            </li>
+                        </ul>
+                     </li>
+                    <!-- Comments -->
+                    <!-- user has to be an admin or mod to see comments -->
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                    {
+                        <li><a asp-controller="Comments" asp-action="Index">Comments</a></li>
+                    }
+                    <!-- Tags -->
+                    <li class="menu-item-has-children">
+                        <a href="#">Tags</a>
+                        <ul class="axil-submenu">
+                            @* user is logged in and is an admin or mod to create tags *@
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                            {
+                                <li>
+                                    <a asp-controller="Tags" asp-action="Create">Create New</a>
+                                </li>
+                            }
+                            @foreach (Tag tag in tags) {
+                                <li>
+                                    <a asp-controller="Tags" asp-action="Details" asp-route-id="@tag.Id">@tag.Name</a>
+                                </li>
+                            }
+                            <li>
+                                <a asp-controller="Tags" asp-action="Index">All Tags</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a asp-controller="Home" asp-action="ContactMe">Contact Me</a></li>
                     
                     @if (!SignInManager.IsSignedIn(User)) {
                         <li>
@@ -180,8 +356,10 @@
                             <div class="inner d-flex align-items-center flex-wrap">
                                 <h5 class="follow-title mb--0 mr--20">Connect With Me</h5>
                                 <ul class="social-icon color-tertiary md-size justify-content-start">
+                                    <li><a href="https://tomnguyen9517.netlify.app/"><i class="far fa-blog"></i></a></li>
                                     <li><a href="https://www.linkedin.com/in/txn9517"><i class="fab fa-linkedin-in"></i></a></li>
                                     <li><a href="https://github.com/tn2690/"><i class="fab fa-github"></i></a></li>
+                                    <li><a href="mailto:tndallas9517@gmail.com"><i class="far fa-envelope"></i></a></li>
                                 </ul>
                             </div>
                             <!-- End Post List  -->
@@ -195,7 +373,7 @@
             <div class="copyright-area">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-lg-9 col-md-12">
+                        <div class="col-12 col-lg-9 col-md-8">
                             <div class="copyright-left">
                                 <div class="logo">
                                     <a asp-controller="Home" asp-action="Index">
@@ -205,9 +383,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-12">
+                        <div class="col-12 col-lg-3 col-md-4">
                             <div class="copyright-right text-start text-lg-end mt_md--20 mt_sm--20">
-                                <p class="b3">All Rights Reserved © 2022 Tom Nguyen</p>
+                                <p class="b3">Site Created By Tom Nguyen | All Rights Reserved © 2022</p>
                             </div>
                         </div>
                     </div>
@@ -241,7 +419,6 @@
 
     <!-- CKEditor 5 -->
     <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
-    @*<script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/super-build/ckeditor.js"></script>*@
 
     <!-- Sweet Alerts -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

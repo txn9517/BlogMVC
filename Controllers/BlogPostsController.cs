@@ -296,10 +296,17 @@ namespace BlogMVC.Controllers
 
             BlogPost? blogPost = await _context.BlogPosts.FindAsync(id);
 
-            if (blogPost != null)
+            // check if blog post is not deleted
+            if (blogPost != null && blogPost.IsDeleted == false)
             {
                 // set deleted blog post to true
                 blogPost.IsDeleted = true;
+
+            }
+            else if (blogPost != null && blogPost.IsDeleted == true)
+            {
+                // set deleted blog post to false
+                blogPost.IsDeleted = false;
             }
 
             await _context.SaveChangesAsync();

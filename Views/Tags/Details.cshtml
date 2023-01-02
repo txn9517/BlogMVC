@@ -61,6 +61,26 @@
                                             <li>@post.DateCreated.ToString("MMM dd, yyyy")</li>
                                             <li>@post.Comments!.Count comments</li>
                                         </ul>
+                                        @* user has to be an admin or mod to see Edit *@
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                        {
+                                            <div class="row">
+                                                <div class="col-12 col-lg-6">
+                                                    <a class="btn btn-primary rounded-pill my-2" asp-action="Edit" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                        <span data-text="Edit">Edit</span>
+                                                    </a>
+                                                </div>
+                                                @* user has to be an admin to see Delete *@
+                                                @if (User.IsInRole("Administrator"))
+                                                {
+                                                    <div class="col-12 col-lg-6">
+                                                        <a class="btn btn-primary rounded-pill my-2" asp-action="Delete" asp-controller="BlogPosts" asp-route-id="@post.Id">
+                                                            <span data-text="Delete">Delete</span>
+                                                        </a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>

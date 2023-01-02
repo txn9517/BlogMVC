@@ -34,31 +34,6 @@
         <div class="container">
             <div class="row">
                 <h1>Published Blog Posts</h1>
-                @* user is logged in and is an admin or mod to create and publish unpublished posts *@
-                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
-                {
-                    <div class="row rows-col-1 row-cols-lg-3 mb-5">
-                        <div class="col-12 col-lg-3 my-2">
-                            <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
-                        </div>
-
-                        <div class="col-12 col-lg-3 my-2">
-                            <a asp-action="PostsUnpub" class="btn btn-primary rounded-pill">See Posts - Unpublished</a>
-                        </div>
-                        
-                        @* only admin can see deleted posts *@
-                        @if (User.IsInRole("Administrator"))
-                        {
-                            <div class="col-12 col-lg-3 order-lg-last my-2">
-                                <a asp-action="DeletedPostsPub" class="btn btn-primary rounded-pill">See Deleted Posts - Published</a>
-                            </div>
-
-                            <div class="col-12 col-lg-3 order-last my-2">
-                                <a asp-action="DeletedPostsUnpub" class="btn btn-primary rounded-pill">See Deleted Posts - Unpublished</a>
-                            </div>
-                        }
-                    </div>
-                }
                 <div class="col-lg-8 col-xl-8">
                     @foreach (BlogPost post in Model)
                     {
@@ -72,7 +47,7 @@
                             <div class="post-content">
                                 <div class="post-cat">
                                     <div class="post-cat-list">
-                                        <a class="hover-flip-item-wrapper">
+                                        <a class="hover-flip-item-wrapper" asp-controller="Categories" asp-action="Details" asp-route-id="@post.CategoryId">
                                             <span class="hover-flip-item">
                                                 <span data-text="@post.Category!.Name">@post.Category.Name</span>
                                             </span>

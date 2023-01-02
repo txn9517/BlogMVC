@@ -13,15 +13,6 @@
 <div class="container mt-5">
     <div class="axil-single-widget widget widget_categories mb--30">
         <h1>Categories</h1>
-        @* user is logged in and is an admin or mod to create categories *@
-        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-        {
-            <div class="row mb-3">
-                <div class="col-12 col-lg-3">
-                    <a asp-action="Create" class="btn btn-primary rounded-pill">Create New</a>
-                    </div>
-            </div>
-        }
         <ul>
             @foreach (Category item in (await BlogPostService.GetCategoriesAsync()))
             {
@@ -32,6 +23,20 @@
                         </div>
                         <div class="content">
                             <h5 class="title">@item.Name</h5>
+                            <ul class="post-meta-list">
+                                @if (item.BlogPosts.Count > 1)
+                                {
+                                    <li>@item.BlogPosts.Count posts</li>
+                                }
+                                else if (item.BlogPosts.Count == 1)
+                                {
+                                    <li>@item.BlogPosts.Count post</li>
+                                }
+                                else
+                                {
+                                    <li>0 posts</li>
+                                }
+                            </ul>
                         </div>
                     </a>
 
@@ -43,8 +48,8 @@
                         @* user has to be an admin to delete categories *@
                         @if (User.IsInRole("Administrator"))
                         {
-                                <a asp-action="Delete" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Delete</a>
-                         }
+                            <a asp-action="Delete" class="btn btn-primary rounded-pill" asp-route-id="@item.Id">Delete</a>
+                        }
                     }
                 </li>
             }
