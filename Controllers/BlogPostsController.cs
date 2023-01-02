@@ -116,7 +116,7 @@ namespace BlogMVC.Controllers
         }
 
         // GET: BlogPosts/Create
-        [Authorize(Roles="Administrator,Moderator")]
+        [Authorize(Roles="Administrator,Moderator,Author")]
         public async Task<IActionResult> Create()
         {
             BlogPost blogPost = new BlogPost();
@@ -130,7 +130,7 @@ namespace BlogMVC.Controllers
         // POST: BlogPosts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator,Moderator")]
+        [Authorize(Roles = "Administrator,Moderator,Author")]
         public async Task<IActionResult> Create([Bind("Id,Title,Content,CategoryId,Abstract,IsDeleted,IsPublished,BlogPostImage")] BlogPost blogPost, string stringTags)
         {
             ModelState.Remove("CreatorId");

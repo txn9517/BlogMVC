@@ -15,6 +15,8 @@ namespace BlogMVC.Data
         private const string _modRole = "Moderator";
         private const string _adminEmail = "tndallas9517@gmail.com";
         private const string _modEmail = "txn0864@yahoo.com";
+        private const string _authorRole = "Author";
+        private const string _authorEmail = "author1@mailinator.com";
 
         // begin setting up connection to db
         public static string GetConnectionString(IConfiguration config)
@@ -80,6 +82,11 @@ namespace BlogMVC.Data
             {
                 await roleManager.CreateAsync(new IdentityRole(_modRole));
             }
+
+            if (!await roleManager.RoleExistsAsync(_authorRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(_authorRole));
+            }
         }
         
         // creates demo login users
@@ -118,6 +125,23 @@ namespace BlogMVC.Data
                     await userManager.CreateAsync(modUser, config["ModeratorPassword"] ?? Environment.GetEnvironmentVariable("ModeratorPassword"));
                     await userManager.AddToRoleAsync(modUser, _modRole);
                 }
+
+                // creates an author user
+                if (!context.Users.Any(u => u.Email == _authorEmail))
+                {
+                    BlogUser authorUser = new()
+                    {
+                        UserName = _authorEmail,
+                        Email = _authorEmail,
+                        FirstName = "Author",
+                        LastName = "User",
+                        EmailConfirmed = true
+                    };
+
+                    await userManager.CreateAsync(authorUser, config["AuthorPassword"] ?? Environment.GetEnvironmentVariable("AuthorPassword"));
+                    await userManager.AddToRoleAsync(authorUser, _authorRole);
+                }
+
             } catch (Exception)
             {
                 throw;

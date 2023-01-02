@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="~/assets/css/vendor/base.css">
     <link rel="stylesheet" href="~/assets/css/plugins/plugins.css">
     <link rel="stylesheet" href="~/assets/css/style.css" asp-append-version="true">
-    
+
     <!-- Google Fonts -->
     @*<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,7 +83,7 @@
                                     <li class="menu-item-has-children">
                                         <a asp-controller="BlogPosts" asp-action="Index">BlogPosts</a>
                                         @* user is logged in and is an admin or mod to create and publish unpublished posts *@
-                                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || User.IsInRole("Author"))
                                         {
                                             <ul class="axil-submenu">
                                                 <li>
@@ -93,13 +93,16 @@
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <li>
-                                                    <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="PostsUnpub">
-                                                        <span class="hover-flip-item">
-                                                            <span data-text="Unpublished Posts">Unpublished Posts</span>
-                                                        </span>
-                                                    </a>
-                                                </li>
+                                                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                                {
+                                                    <li>
+                                                        <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="PostsUnpub">
+                                                            <span class="hover-flip-item">
+                                                                <span data-text="Unpublished Posts">Unpublished Posts</span>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                }
                                                 @* only admin can see deleted posts *@
                                                 @if (User.IsInRole("Administrator"))
                                                 {
@@ -124,7 +127,7 @@
                                     <!-- Categories -->
                                     <li class="menu-item-has-children">
                                         <a asp-controller="Categories" asp-action="Index">Categories</a>
-                                        
+
                                         <ul class="axil-submenu">
                                             @* user is logged in and is an admin or mod to create categories *@
                                             @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
@@ -137,7 +140,8 @@
                                                     </a>
                                                 </li>
                                             }
-                                            @foreach (Category item in categories) {
+                                            @foreach (Category item in categories)
+                                            {
                                                 <li>
                                                     <a class="hover-flip-item-wrapper" asp-controller="Categories" asp-action="Details" asp-route-id="@item.Id">
                                                         <span class="hover-flip-item">
@@ -145,7 +149,7 @@
                                                         </span>
                                                     </a>
                                                 </li>
-                                                }
+                                            }
                                         </ul>
                                     </li>
                                     <!-- Comments -->
@@ -157,7 +161,7 @@
                                     <!-- Tags -->
                                     <li class="menu-item-has-children">
                                         <a asp-controller="Tags" asp-action="Index">Tags</a>
-                                            
+
                                         <ul class="axil-submenu">
                                             @* user is logged in and is an admin or mod to create tags *@
                                             @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
@@ -170,13 +174,14 @@
                                                     </a>
                                                 </li>
                                             }
-                                            @foreach (Tag tag in tags) {
+                                            @foreach (Tag tag in tags)
+                                            {
                                                 <li>
                                                     <a class="hover-flip-item-wrapper" asp-controller="Tags" asp-action="Details" asp-route-id="@tag.Id">
                                                         <span class="hover-flip-item">
                                                             <span data-text="@tag.Name">@tag.Name</span>
                                                         </span>
-                                                     </a>
+                                                    </a>
                                                 </li>
                                             }
                                         </ul>
@@ -190,7 +195,7 @@
 
                     <div class="col-xl-3 col-lg-8 col-md-8 col-sm-9 col-12">
                         <div class="header-search text-end d-flex align-items-center">
-                            
+
                             <div class="mainmenu-wrapper d-none d-xl-block ms-auto">
                                 <div class="mainmenu-nav">
                                     <ul class="mainmenu">
@@ -213,7 +218,7 @@
                                     </div>
                                 </form>
                             </div>
-                            
+
                             <!-- Start Hamburger Menu  -->
                             <div class="hamburger-menu d-block d-xl-none me-sm-auto">
                                 <div class="hamburger-inner">
@@ -254,14 +259,17 @@
                             <li>
                                 <a asp-controller="BlogPosts" asp-action="Index">Published Posts</a>
                             </li>
-                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || User.IsInRole("Author"))
                             {
                                 <li>
                                     <a asp-controller="BlogPosts" asp-action="Create">Create New</a>
                                 </li>
-                                <li>
-                                    <a asp-controller="BlogPosts" asp-action="PostsUnpub">Unpublished Posts</a>
-                                </li>
+                                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                {
+                                    <li>
+                                        <a asp-controller="BlogPosts" asp-action="PostsUnpub">Unpublished Posts</a>
+                                    </li>
+                                }
                                 @* only admin can see deleted posts *@
                                 @if (User.IsInRole("Administrator"))
                                 {
@@ -286,7 +294,8 @@
                                     <a asp-controller="Categories" asp-action="Create">Create New</a>
                                 </li>
                             }
-                            @foreach (Category item in categories) {
+                            @foreach (Category item in categories)
+                            {
                                 <li>
                                     <a asp-controller="Categories" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
                                 </li>
@@ -295,7 +304,7 @@
                                 <a asp-controller="Categories" asp-action="Index">All Categories</a>
                             </li>
                         </ul>
-                     </li>
+                    </li>
                     <!-- Comments -->
                     <!-- user has to be an admin or mod to see comments -->
                     @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
@@ -313,7 +322,8 @@
                                     <a asp-controller="Tags" asp-action="Create">Create New</a>
                                 </li>
                             }
-                            @foreach (Tag tag in tags) {
+                            @foreach (Tag tag in tags)
+                            {
                                 <li>
                                     <a asp-controller="Tags" asp-action="Details" asp-route-id="@tag.Id">@tag.Name</a>
                                 </li>
@@ -324,8 +334,9 @@
                         </ul>
                     </li>
                     <li><a asp-controller="Home" asp-action="ContactMe">Contact Me</a></li>
-                    
-                    @if (!SignInManager.IsSignedIn(User)) {
+
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
                         <li>
                             <a asp-area="Identity" asp-page="/Account/Login">Sign In</a>
                         </li>
@@ -333,7 +344,8 @@
                             <a asp-area="Identity" asp-page="/Account/Register">Register</a>
                         </li>
                     }
-                    else {
+                    else
+                    {
                         <li>
                             <a href="#" onclick="document.getElementById('logoutForm').submit()">Logout</a>
                         </li>
@@ -342,7 +354,6 @@
             </div>
         </div>
         <!-- End Mobile Menu Area  -->
-
         @RenderBody()
 
         <!-- Start Footer Area  -->
@@ -368,7 +379,6 @@
                 </div>
             </div>
             <!-- End Footer Top Area  -->
-
             <!-- Start Copyright Area  -->
             <div class="copyright-area">
                 <div class="container">

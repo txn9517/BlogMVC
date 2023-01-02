@@ -4,7 +4,9 @@
 @using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
+@using Microsoft.AspNetCore.Identity
 @inject IImageService ImageService
+@inject UserManager<BlogUser> UserManager
 
 @{
     ViewData["Title"] = "Index";

@@ -109,7 +109,7 @@ namespace BlogMVC.Controllers
             }
 
             // if user is admin, mod, or comment author, see comment edit form
-            if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || comment.AuthorId == _userManager.GetUserId(User))
+            if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || User.IsInRole("Author") || comment.AuthorId == _userManager.GetUserId(User))
             {
                 ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
                 ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
@@ -135,7 +135,7 @@ namespace BlogMVC.Controllers
             // if user is NOT admin or mod
             // if user wrote comment, let them edit
             // return error
-            if (!(User.IsInRole("Administrator")) && !(User.IsInRole("Moderator")) && !(comment.AuthorId == _userManager.GetUserId(User)))
+            if (!(User.IsInRole("Administrator")) && !(User.IsInRole("Moderator")) && !(User.IsInRole("Author")) && !(comment.AuthorId == _userManager.GetUserId(User)))
             {
                 return Unauthorized();
             }
