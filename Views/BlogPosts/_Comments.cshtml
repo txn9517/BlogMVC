@@ -1,8 +1,10 @@
 ﻿@model BlogMVC.Models.BlogPost
 @using BlogMVC.Services.Interfaces
 @using BlogMVC.Enums
+@using Microsoft.AspNetCore.Identity
 @inject IImageService ImageService
 @inject IBlogPostService BlogPostService
+@inject UserManager<BlogUser> UserManager
 
 @{
 }
@@ -33,18 +35,21 @@
                             <div class="comment-meta">
                                 <div class="time-spent">@comment.DateCreated.ToString("MMM dd, yyyy hh:mm tt") <small><i>Date created</i></small>
                                                         <br>
-                                                        @comment.LastUpdated?.ToString("MMM dd, yyyy hh:mm tt") <small><i>Last updated</i></small>
+                                                        @(comment.LastUpdated?.ToString("MMM dd, yyyy hh:mm tt") ?? "No Updated Date") <small><i>Last updated</i></small>
                                 </div>
                                     <div class="reply-edit">
                                         <div class="reply">
                                                 @* user has to be logged in to see edit button *@
                                                 @if (User.Identity!.IsAuthenticated)
                                                 {
-                                                    <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">
-                                                        <span class="hover-flip-item">
-                                                            <span data-text="Edit">Edit</span>
-                                                        </span>
-                                                    </a>
+                                                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || comment.AuthorId == UserManager.GetUserId(User)) 
+                                                    {
+                                                        <a class="comment-reply-link hover-flip-item-wrapper" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">
+                                                            <span class="hover-flip-item">
+                                                                <span data-text="Edit">Edit</span>
+                                                            </span>
+                                                        </a>
+                                                    }
                                                 }
                                                 @* user has to be an admin or mod to delete comment *@
                                                 @if (User.IsInRole("Administrator") || User.IsInRole("Moderator")) 
