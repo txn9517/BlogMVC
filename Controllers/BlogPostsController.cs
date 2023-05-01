@@ -26,6 +26,7 @@ namespace BlogMVC.Controllers
         private readonly IBlogPostService _blogPostService;
         private readonly UserManager<BlogUser> _userManager;
 
+        // dependency injection
         public BlogPostsController(ApplicationDbContext context,
                                    IImageService imageService,
                                    IBlogPostService blogPostService,
